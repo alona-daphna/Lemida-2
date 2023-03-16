@@ -1,9 +1,14 @@
 import './App.css';
+import Chat from './components/Chat';
+import Contacts from './components/Contacts';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello</h1>
+    <div className="app">
+      <div className="container">
+          <Contacts />
+          <Chat />
+      </div>
     </div>
   );
 }
