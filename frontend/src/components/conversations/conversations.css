@@ -2,5 +2,15 @@ input.search-conv {
     background: inherit;
     border-bottom: 1px solid #ccc;
     padding: 10px;
-    margin-bottom: 20px;
+}
+
+.chats {
+    height: calc(100vh - 250px);
+    overflow:hidden;
+    overflow-y:auto;
+}
+
+.conversations {
+    display: grid;
+    grid-template-rows: 1fr 7fr;
 }

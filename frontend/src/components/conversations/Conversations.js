@@ -6,13 +6,33 @@ const Conversations = () => {
     return ( 
         <div className="conversations" >
             <input className="search-conv" type="text" placeholder='Search'/>
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
+
+            <div className="chats">
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+            </div>
         </div>
      );
 }

@@ -7,10 +7,23 @@ const Chat = () => {
         <div className="chat">
             <div className="top-bar">
                 <button className='back'>back</button>
-                topbar
+                TopBar
             </div>
             
             <div className="chat-body">
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
                 <Message />
                 <Message />
                 <Message />
