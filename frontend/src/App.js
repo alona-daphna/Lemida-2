@@ -1,15 +1,27 @@
-import './App.css';
-import Chat from './components/Chat';
-import Contacts from './components/Contacts';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+
+// components
+import Home from './pages/home/Home';
+import Register from './pages/register/Register';
+import Login from './pages/login/Login'
+import Navbar from './components/navbar/Navbar';
 
 function App() {
+  const [user, setUser] = useState(true);
+
   return (
-    <div className="app">
-      <div className="container">
-          <Contacts />
-          <Chat />
-      </div>
-    </div>
+
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+
+        <Route path='/' element={user ? <Home /> : <Register />}/>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 

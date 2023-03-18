@@ -1,0 +1,13 @@
+.navbar-container {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 30px 40px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+h3 {
+    font-size: 1.7rem;
+}
