@@ -1,0 +1,44 @@
+.top-bar, .bottom-bar {
+    border: 1px solid #fff;
+}
+
+.chat {
+    display: grid;
+    grid-template-rows: 1fr 6fr 1fr;
+}
+
+.chat-body {
+    border: 1px solid #fff;
+}
+
+button.back {
+    display: none;
+}
+
+@media (max-width: 650px) {
+    button.back {
+        display: inline;
+        cursor: pointer;
+        background: inherit;
+        margin-right: 10px;
+    }
+}
+
+input.message {
+    background: inherit;
+}
+
+button.send {
+    cursor: pointer;
+    font-size: 1.1rem;
+    background: rgb(19, 2, 29);
+    padding: 8px 15px 5px 20px;
+    border-radius: 20px;
+}
+
+.bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}

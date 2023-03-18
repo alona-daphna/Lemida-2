@@ -1,20 +1,28 @@
-import './App.css';
+import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+
+// components
+import Home from './pages/home/Home';
+import Register from './pages/register/Register';
+import Login from './pages/login/Login'
+import Navbar from './components/navbar/Navbar';
 
 function App() {
+  const [user, setUser] = useState(true);
+
   return (
-    <div className="App">
-      <div className="screen">
-        <div className="column">
-          {/* <div className="profile">
-            <img className="profilePic" src="https://media.istockphoto.com/id/1322275410/photo/profile-of-young-man.jpg?b=1&s=170667a&w=0&k=20&c=86FMyZeMtHqqcudnTIf0s8_QqMD2AZpio0O_1f76w5c=" alt="ProfilePic"/>
-            <span className="onlineStatus"></span>
-          </div> */}
-        </div>
-        <div className="column">
-          <div className="chat"></div>
-        </div>
-      </div>
-    </div>
+
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+
+        <Route path='/' element={user ? <Home /> : <Register />}/>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
