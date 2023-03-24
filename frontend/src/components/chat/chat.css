@@ -25,8 +25,8 @@ button.back {
 }
 
 input.message {
-    width: 85%;
     padding: 10px;
+    padding-left: 20px;
     background: #343434;
     border-radius: 15px;
     color: rgb(97, 84, 242);
@@ -44,8 +44,10 @@ button.send {
 }
 
 .bottom-bar {
-    display: flex;
+    display: grid;
+    grid-template-columns: 12fr 1fr;
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
+    gap: 10px;
 }
