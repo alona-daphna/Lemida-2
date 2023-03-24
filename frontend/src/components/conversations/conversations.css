@@ -1,6 +1,50 @@
-input.search-conv {
-    background: inherit;
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
+* {
+    outline: none;
 }
+
+.search-input {
+    padding: 10px;
+    width: 100%;
+    background: #3c3c3c;
+    border-radius: 15px;
+    transition: box-shadow 100ms ease-in, border 100ms ease-in, background-color 100ms ease-in;
+    color: rgb(67, 58, 230);
+    font-weight: 600;
+    background-position: right;
+    caret-color: rgb(67, 58, 230);
+}
+
+.search-input:active {
+    border: 2px solid rgb(67, 58, 230);
+    background: #2a2626; 
+    outline: none;
+}
+
+.search-input:focus {
+    border: 2px solid rgb(67, 58, 230);
+    background: #2a2626; 
+    outline: none;
+}
+
+.search-input:hover {
+    border: 2px solid rgb(67, 58, 230);
+    background: #2a2626; 
+}
+
+.search-button {
+    background: inherit;
+    font-size: 1.3rem;
+    width: 10%;
+    padding-top: 8px;
+    padding-right: 5px;
+    margin-left: -40px;    
+}
+
+.search-form {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 10px;
+    margin-bottom: 8px;
+}
+

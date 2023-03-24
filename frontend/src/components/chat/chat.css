@@ -31,7 +31,7 @@ input.message {
 button.send {
     cursor: pointer;
     font-size: 1.1rem;
-    background: rgb(19, 2, 29);
+    background:rgb(67, 58, 230);
     padding: 8px 15px 5px 20px;
     border-radius: 20px;
 }
