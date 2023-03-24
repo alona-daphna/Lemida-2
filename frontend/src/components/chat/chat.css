@@ -25,7 +25,14 @@ button.back {
 }
 
 input.message {
-    background: inherit;
+    width: 85%;
+    padding: 10px;
+    background: #343434;
+    border-radius: 15px;
+    color: rgb(97, 84, 242);
+    font-weight: 600;
+    background-position: right;
+    caret-color: rgb(154, 146, 242);
 }
 
 button.send {
@@ -40,5 +47,5 @@ button.send {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 10px;
 }
