@@ -3,6 +3,7 @@
 }
 
 .chat {
+    max-height: 95%;
     display: grid;
     grid-template-rows: 12% 75% 13%;
     background: #191a1c;
