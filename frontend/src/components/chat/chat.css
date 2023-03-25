@@ -4,7 +4,7 @@
 
 .chat {
     display: grid;
-    grid-template-rows: 1fr 6fr 1fr;
+    grid-template-rows: 12% 75% 13%;
 }
 
 .chat-body {
