@@ -40,6 +40,7 @@ button.send {
     background: var(--primary-color);
     padding: 8px 15px 5px 20px;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 .bottom-bar {
