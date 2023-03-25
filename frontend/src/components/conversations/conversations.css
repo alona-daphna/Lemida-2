@@ -50,4 +50,11 @@
     display: grid;
     grid-template-rows: 12% 88%;
     overflow: hidden;
+    background: #28292e;
+}
+
+@media (max-width: 650px) {
+    .conversations {
+        display: none;
+    }
 }

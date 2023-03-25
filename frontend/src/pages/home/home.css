@@ -6,16 +6,6 @@
     margin: 0 auto;
     height: calc(100vh - 150px);
   }
-  
-.conversations {
-  background: #28292e;
-  height: 100%;
-}
-
-.chat {
-  background: #191a1c;
-  height: 100%;
-}
 
 @media (max-width: 1200px) {
   .container {
@@ -25,16 +15,8 @@
 }
 
 @media (max-width: 650px) {
-  .container {
+   .container {
     display: block;
-  }
-  .chat {
-    width: 94%;
-    height: 100%;
-    margin: auto;
-  }
-  .conversations {
-    display: none;
   }
 }
 
