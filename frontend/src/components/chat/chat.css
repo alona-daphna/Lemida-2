@@ -9,6 +9,8 @@
 
 .chat-body {
     border: 1px solid #fff;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 button.back {
@@ -50,4 +52,10 @@ button.send {
     justify-content: space-between;
     padding: 0 10px;
     gap: 10px;
+}
+
+.top-bar {
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
