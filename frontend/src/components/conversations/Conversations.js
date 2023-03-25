@@ -15,13 +15,32 @@ const Conversations = () => {
                 <input className="search-input" type="text" placeholder='Search'/>
                 <button className="search-button"><BiSearch /></button>
             </form>
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
-            <Contact />
+            <div className="chats">
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+                <Contact />
+            </div>
         </div>
      );
 }

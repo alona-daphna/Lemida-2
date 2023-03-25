@@ -20,6 +20,22 @@ const Chat = () => {
                 <Message />
                 <Message />
                 <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
             </div>
 
             <form className="bottom-bar" onSubmit={handleSubmit}>

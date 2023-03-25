@@ -9,6 +9,8 @@
 
 .chat-body {
     border: 1px solid #fff;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 button.back {

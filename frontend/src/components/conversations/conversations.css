@@ -37,11 +37,17 @@
 }
 
 .search-form {
-    width: 100%;
     display: flex;
     border-bottom: 1px solid #ccc;
     padding: 10px 10px;
-    margin-bottom: 8px;
-    height: 12%;
 }
 
+.chats {
+    overflow-y: auto;
+}
+
+.conversations {
+    display: grid;
+    grid-template-rows: 12% 88%;
+    overflow: hidden;
+}
