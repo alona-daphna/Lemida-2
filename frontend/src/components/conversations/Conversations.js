@@ -1,12 +1,20 @@
 import Contact from "../contact/Contact";
 import './conversations.css'
+import { BiSearch } from 'react-icons/bi';
 
 
 const Conversations = () => {
-    return ( 
-        <div className="conversations" >
-            <input className="search-conv" type="text" placeholder='Search'/>
 
+    const handleSubmit = async () => {
+
+    }
+
+    return ( 
+        <div className="conversations" >            
+          <form className="search-form" onSubmit={handleSubmit}>
+            <input className="search-input" type="text" placeholder='Search'/>
+            <button className="search-button"><BiSearch /></button>
+          </form>  
             <div className="chats">
                 <Contact />
                 <Contact />

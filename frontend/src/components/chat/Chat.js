@@ -3,6 +3,11 @@ import './chat.css'
 import { IoSend } from 'react-icons/io5';
 
 const Chat = () => {
+
+    const handleSubmit = async (e) => {
+        // e.preventDefault();
+    }
+
     return ( 
         <div className="chat">
             <div className="top-bar">
@@ -30,10 +35,10 @@ const Chat = () => {
                 <Message />
             </div>
 
-            <div className="bottom-bar">
+            <form className="bottom-bar" onSubmit={handleSubmit}>
                 <input className='message' type="text" placeholder='Type a message'/>
                 <button className="send"><IoSend /></button>
-            </div>
+            </form>
         </div>
      );
 }
