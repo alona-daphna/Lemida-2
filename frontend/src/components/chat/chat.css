@@ -27,18 +27,17 @@ button.back {
 input.message {
     padding: 10px;
     padding-left: 20px;
-    background: #343434;
+    background: var(--dark-gray-1);
     border-radius: 15px;
-    color: rgb(97, 84, 242);
+    color: var(--primary-color);
     font-weight: 600;
     background-position: right;
-    caret-color: rgb(154, 146, 242);
+    caret-color: var(--color-purple-light);
 }
 
 button.send {
-    cursor: pointer;
     font-size: 1.1rem;
-    background:rgb(67, 58, 230);
+    background: var(--primary-color);
     padding: 8px 15px 5px 20px;
     border-radius: 20px;
 }

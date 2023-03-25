@@ -9,10 +9,18 @@
   list-style: none;
   color: #fff;
   font-family: 'Poppins';
+  outline: none;
 
 }
 
 body {
   height: 100vh;
   background: #131315;
+}
+
+:root {
+  --primary-color:rgb(67, 58, 230);
+  --color-purple-light: rgb(154, 146, 242);
+  --dark-gray-1: #343434;
+  --dark-gray-2: #3c3c3c;
 }
