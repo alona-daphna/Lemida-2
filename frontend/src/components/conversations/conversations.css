@@ -1,16 +1,53 @@
-input.search-conv {
-    background: inherit;
-    border-bottom: 1px solid #ccc;
+.search-input {
     padding: 10px;
+    width: 100%;
+    background: var(--dark-gray-2);
+    border-radius: 15px;
+    transition: box-shadow 100ms ease-in, border 100ms ease-in, background-color 100ms ease-in;
+    color: var(--primary-color);
+    font-weight: 600;
+    caret-color: var(--color-purple-light);
+}
+
+.search-input:active {
+    border: 2px solid var(--primary-color);
+    background: inherit; 
+    outline: none;
+}
+
+.search-input:focus {
+    border: 2px solid var(--primary-color);
+    background: inherit; 
+    outline: none;
+}
+
+.search-input:hover {
+    border: 2px solid var(--primary-color);
+    background: inherit; 
+}
+
+.search-button {
+    background: inherit;
+    font-size: 1.3rem;
+    width: 10%;
+    padding-top: 8px;
+    padding-right: 5px;
+    margin-left: -40px;   
+    cursor: pointer; 
+}
+
+.search-form {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 10px;
 }
 
 .chats {
-    height: calc(100vh - 250px);
-    overflow:hidden;
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 .conversations {
     display: grid;
-    grid-template-rows: 1fr 7fr;
+    grid-template-rows: 12% 88%;
+    overflow: hidden;
 }
