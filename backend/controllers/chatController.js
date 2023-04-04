@@ -1,14 +1,30 @@
-// we need to import our model to access all sorts of functions to query and manipulate data from the database
 const Chat = require('../models/chatModule')
 
-// here we define all the functions for operations with the data
-// remember that each function corresponds to a route in our /routes folder. It will be called when we visit that endpoint or when we send a request from the frontend.
+// get details for a single chat including participants and chat history
 const getChat = async (req, res) => {
     console.log('get chat')
     res.status(200).json({msg: "get chat"})
 }
 
-// at the end we export all of our functions so we can access them from outside this file
+// get all chats for the authenticated user
+const getChats = async (req, res) => {
+
+}
+
+// create a new chat with the specified user ids
+// invitation code? admin?
+const createChat = async (req, res) => {
+    
+}
+
+// create a new messafe in the specified chat 
+const createMessage = async (req, res) => {
+
+}
+
 module.exports = {
-    getChat
+    getChat,
+    getChats,
+    createChat,
+    createMessage
 }
