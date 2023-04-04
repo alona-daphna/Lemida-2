@@ -1,6 +1,8 @@
+const { getUsers, getUser } = require('../controllers/userController')
+
 const router = require('express').Router()
 
-// define all of our routes here
-
+router.get('/:id', getUser)
+router.get('/', getUsers)
 
 module.exports = router
