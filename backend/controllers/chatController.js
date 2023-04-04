@@ -7,24 +7,23 @@ const getChat = async (req, res) => {
 }
 
 // get all chats for the authenticated user
-const getChats = async (req, res) => {
+const getUserChats = async (req, res) => {
 
 }
 
 // create a new chat with the specified user ids
-// invitation code? admin?
 const createChat = async (req, res) => {
     
 }
 
-// create a new messafe in the specified chat 
+// create a new message in the specified chat 
 const createMessage = async (req, res) => {
 
 }
 
 module.exports = {
     getChat,
-    getChats,
+    getUserChats,
     createChat,
     createMessage
 }
