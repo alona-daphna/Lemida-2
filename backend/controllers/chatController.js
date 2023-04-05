@@ -16,14 +16,26 @@ const createChat = async (req, res) => {
     
 }
 
+// update chat name, list of participants, list of admins
+const updateChat = async (req, res) => {
+
+}
+
 // create a new message in the specified chat 
 const createMessage = async (req, res) => {
 
+}
+
+// delete chat
+const deleteChat = async (req, res) => {
+    
 }
 
 module.exports = {
     getChat,
     getUserChats,
     createChat,
-    createMessage
+    updateChat,
+    createMessage,
+    deleteChat
 }

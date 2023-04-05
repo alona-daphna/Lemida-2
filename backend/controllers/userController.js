@@ -11,7 +11,19 @@ const getUsers = async (req, res) => {
 
 }
 
+//  update user name or password
+const updateUser = async (req, res) => {
+
+}
+
+// delete user
+const deleteUser = async (req, res) => {
+
+}
+
 module.exports = {
     getUser,
-    getUsers
+    getUsers,
+    updateUser,
+    deleteUser
 }
