@@ -7,12 +7,12 @@ const chatSchema = new Schema({
         type: String,
         required: true
     },
-    members: {
+    members: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-    message_history: {
+    }],
+    message_history: [{
         text: {
             type: String,
             required: true
@@ -26,7 +26,7 @@ const chatSchema = new Schema({
             type: Date,
             required: true
         }
-    }
+    }]
 
 }, {timestamps: true})
 

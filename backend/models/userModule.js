@@ -11,10 +11,10 @@ const userSchema = new Schema({
         String,
         required: true
     },
-    chats: {
+    chats: [{
         type: Schema.Types.ObjectId,
         ref: 'Chat'
-    }
+    }]
 })
 
 module.exports = mongoose.model('User', userSchema)
