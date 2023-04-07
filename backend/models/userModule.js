@@ -8,7 +8,7 @@ const userSchema = new Schema({
         required: true
     },
     password: {
-        String,
+        type: String,
         required: true
     },
     chats: [{
@@ -17,4 +17,4 @@ const userSchema = new Schema({
     }]
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('user', userSchema)
