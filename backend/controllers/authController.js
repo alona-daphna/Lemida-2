@@ -5,13 +5,12 @@ const dotenv = require('dotenv').config({ path: __dirname + '\\..\\..\\.env' });
 
 const registerUser = async (req, res) => {
     const { username, password } = req.body;
-    let errors = { username: null, password: null };
 
     if (username.length == 0) {
-        errors.username = 'Username is required';
+        return res.status(400).json({error: 'Username is required');
     } 
     if (password.length == 0) {
-        errors.password = 'Password is required';
+        return res.status(400).json({error: 'Password is required');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,34 +20,32 @@ const registerUser = async (req, res) => {
             username: username, 
             password: hashedPassword
         });
-        res.status(201).json('New user created');
+        return res.status(201).json('New user created');
     } catch (error) {
         console.log(error);
-        if (error.mame == 'MongoServerError') {
+        if (error.name == 'MongoServerError') {
             if (error.code == 11000) {
-                errors.username = 'Username already taken';
+                return res.status(400).json({error: 'Username already taken');
             }
         }
-        res.status(400).json({ errors });
+        return res.status(400).json({error: error});
     }
 }
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
-    let errors = { username: null, password: null };
 
     if (username.length == 0) {
-        errors.username = 'Username is required';
+        return res.status(400).json({error: 'Username is required');
     } 
     if (password.length == 0) {
-        errors.password = 'Password is required';
+        return res.status(400).json({error: 'Password is required');
     }
 
     try {
         const realUser = await User.findOne({ username });
         if (!realUser) {
-            errors.password = 'Username or password are incorrect';
-            return res.status(401).json({ errors });
+            return res.status(401).json({ error: 'Username or password are incorrect' });
         }
 
         const auth = await bcrypt.compare(password, realUser.password);
@@ -63,13 +60,12 @@ const loginUser = async (req, res) => {
             res.status(200).json('Logged in');
         } else {
             // incorrect password
-            error.password = 'Username or password are incorrect';
-            res.status(400).json({ errors });
+            return res.status(400).json({ error: 'Username or password are incorrect'});
         }
 
     } catch (error) {
         console.log(error);
-        res.json({ error: error.name });
+        return res.json({ error: error.name });
     }
 }
 
