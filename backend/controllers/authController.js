@@ -7,10 +7,10 @@ const registerUser = async (req, res) => {
     const { username, password } = req.body;
 
     if (username.length == 0) {
-        return res.status(400).json({error: 'Username is required');
+        return res.status(400).json({error: 'Username is required'});
     } 
     if (password.length == 0) {
-        return res.status(400).json({error: 'Password is required');
+        return res.status(400).json({error: 'Password is required'});
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,7 +25,7 @@ const registerUser = async (req, res) => {
         console.log(error);
         if (error.name == 'MongoServerError') {
             if (error.code == 11000) {
-                return res.status(400).json({error: 'Username already taken');
+                return res.status(400).json({error: 'Username already taken'});
             }
         }
         return res.status(400).json({error: error});
@@ -36,10 +36,10 @@ const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
     if (username.length == 0) {
-        return res.status(400).json({error: 'Username is required');
+        return res.status(400).json({error: 'Username is required'});
     } 
     if (password.length == 0) {
-        return res.status(400).json({error: 'Password is required');
+        return res.status(400).json({error: 'Password is required'});
     }
 
     try {
