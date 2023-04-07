@@ -8,7 +8,7 @@ const requireAuth = (req, res, next) => {
     if(!token) return res.status(401).json({error: 'User is not authorized'})
     
     try {
-        const decodedToken = jwt.verify(token.split('')[1], process.env.AUTH_TOKEN)
+        const decodedToken = jwt.verify(token.split(' ')[1], process.env.AUTH_TOKEN)
         req.userId = decodedToken.id;
         next()
     } catch (error) {
