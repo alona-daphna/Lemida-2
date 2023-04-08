@@ -35,3 +35,16 @@ h1 {
     margin: auto;
     margin-bottom: 20px;
 }
+
+.register-container span {
+    width: fit-content;
+    margin: auto;
+    display: block;
+    margin-top: 25px;
+    opacity: 65%;
+}
+
+.register-container span:hover {
+    cursor: pointer;
+    opacity: 100%;
+}

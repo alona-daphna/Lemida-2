@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './register.css'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
   const [username, setUsername] = useState('')
@@ -26,6 +27,8 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)} />
         <button className='register-button'>Register</button>
       </form>
+      
+      <span><Link to="/login">Already have an account?</Link></span>
     </div>
   )
 }
