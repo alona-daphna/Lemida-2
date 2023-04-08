@@ -7,11 +7,11 @@
     display: grid;
     grid-template-rows: 12% 75% 13%;
     background: #191a1c;
+    overflow: hidden;
 }
 
 .chat-body {
     border: 1px solid #fff;
-    overflow: hidden;
     overflow-y: auto;
 }
 
