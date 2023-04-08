@@ -13,14 +13,20 @@ const registerUser = async (req, res) => {
         return res.status(401).json({error: 'Password is required'});
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     try {
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+          return res.status(400).json({ error: 'Username is already taken' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await User.create({
             username: username, 
             password: hashedPassword
         });
-        return res.status(201).json('New user created');
+        const newUser = await User.findById(user._id).select('-password');
+        return res.status(201).json(newUser);
     } catch (error) {
         console.log(error);
         if (error.name == 'MongoServerError') {
@@ -57,7 +63,8 @@ const loginUser = async (req, res) => {
                 process.env.AUTH_TOKEN
             )
             res.cookie('jwt', token);
-            res.status(200).json('Logged in');
+            const user = await User.findById(realUser._id).select({password:0})
+            res.status(200).json(user);
         } else {
             // incorrect password
             return res.status(401).json({ error: 'Username or password are incorrect'});
