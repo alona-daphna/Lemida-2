@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/api/users', userRoutes)
-app. use('/api/chats', requireAuth, chatRoutes)
+app.use('/api/chats', requireAuth, chatRoutes)
 app.use('/api/auth', authRoutes)
 
 app.get('/', (req, res) => {
