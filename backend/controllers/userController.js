@@ -1,4 +1,5 @@
 const User = require('../models/userModule')
+const mongoose = require('mongoose')
 
 
 // get a single user
@@ -50,7 +51,7 @@ const deleteUser = async (req, res) => {
         return res.status(400).json({ message: 'Invalid user ID.' });
     }
     try {
-        const user = await User.findOneAndDelete({ _id: req.params.id });
+        const user = await User.findOneAndDelete({ _id: req.params.id }).select({password: false});
         if(!user) return res.status(404).json({error: 'User not found'})
         res.status(200).json(user);    
     } catch (error) {
