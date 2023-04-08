@@ -1,0 +1,37 @@
+.register-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: auto;
+    max-width: 500px;
+}
+
+.register-container input {
+    padding: 10px;
+    padding-left: 20px;
+    background: var(--dark-gray-1);
+    border-radius: 15px;
+    color: var(--primary-color);
+    font-weight: 600;
+    background-position: right;
+    caret-color: var(--color-purple-light);
+}
+
+.register-button {
+    background: var(--primary-color);
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.register-button:hover {
+    background: var(--color-purple-light);
+    cursor: pointer;
+}
+
+h1 {
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+}
