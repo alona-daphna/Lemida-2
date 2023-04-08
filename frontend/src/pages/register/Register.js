@@ -5,10 +5,30 @@ import { Link } from 'react-router-dom'
 const Register = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(`Username: ${username}, Password: ${password}`)
+
+    const response = await fetch('http://localhost:4000/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({username, password}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const json = await response.json()
+    console.log(json)
+
+    if (response.ok) {
+      setUsername('')
+      setPassword('')
+      setError('')
+    } else {
+      setError(json.error)
+    }
   }
 
   return (
@@ -28,7 +48,11 @@ const Register = () => {
         <button className='register-button'>Register</button>
       </form>
       
-      <span><Link to="/login">Already have an account?</Link></span>
+      <span className='already-exist'><Link to="/login">Already have an account?</Link></span>
+      {error && 
+      <span className="register-error">{error}</span>
+      }
+      
     </div>
   )
 }
