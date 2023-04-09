@@ -1,3 +1,4 @@
+const User = require('../models/userModule')
 const Chat = require('../models/chatModule')
 
 // get details for a single chat including participants and chat history
@@ -17,16 +18,15 @@ const getChat = async (req, res) => {
 
 // get all chats for the authenticated user
 const getUserChats = async (req, res) => {
-    res.status(200).json({msg: "get user chats"})
     try {
         // get the logged in user id
-        const userId = req.user.id;
+        const userId = req.userId;
         // find all chats where the members array contains the user id
         const chats = await Chat.find({ members: userId })
         return res.status(200).json(chats)
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: 'Failed to retrieve chats'})
+        return res.status(500).json({error: 'Failed to retrieve chats'})
     }
 }
 
@@ -37,20 +37,25 @@ const createChat = async (req, res) => {
     if (!name) {
         return res.status(400).json({ error: 'Please provide a name for the chat'})
     }  
-    if (!members || members.length < 1) {
+    if (!members || !Array.isArray(members) || members.length < 1) {
         return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
     }
-
+    
     // add the user creating the chat to the members array
-    members.push(req.user.id);
+    members.push(req.userId);
 
     try {
-        const chatQuery = Chat.create({ name, members });
-        // populate the members array excluding password prop
-        const populatedChat = await chatQuery.populate({
+        // check that all members are valid user ids
+        const memberObjs = await User.find({ _id: { $in: members } }, '_id');
+        if (memberObjs.length !== members.length) {
+            return res.status(400).json({ error: 'Invalid member id(s)' });
+        }
+
+        const chat = await Chat.create({ name, members });
+        const populatedChat = await Chat.findById(chat._id).populate({
             path: 'members',
             select: '-password'
-        })
+        });
         return res.status(201).json(populatedChat);
     } catch (error) {
         console.log(error)
@@ -58,7 +63,7 @@ const createChat = async (req, res) => {
     }
 }
 
-// update chat name, list of participants, list of admins
+// update chat name, list of participants
 const updateChat = async (req, res) => {
 
 }
