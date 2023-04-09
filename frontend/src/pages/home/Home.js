@@ -6,7 +6,7 @@ import Conversations from '../../components/conversations/Conversations'
 
 const Home = () => {
 
-    const [showConversations, setShowConversations] = useState(false);
+    const [showConversations, setShowConversations] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(window.matchMedia('(max-width: 650px)').matches);
 
     const handleConversationClick = () => {
