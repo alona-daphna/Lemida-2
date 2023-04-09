@@ -5,7 +5,7 @@ const Contact = ({ name, lastMsg, time, picture }) => {
     return ( 
         <div>
             <div class="contact">
-                {picture ? <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic"/> : <CgProfile className="profile-picture"/>}
+                {picture ? <img className='profile-picture' src={picture} alt="ProfilePic"/> : <CgProfile className="profile-picture"/>}
                 <div class="info">
                     <div class="name">{name}</div>
                     <div class="last-message">{lastMsg}</div>
