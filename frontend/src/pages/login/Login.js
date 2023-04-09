@@ -1,13 +1,35 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-const Login = (props) => {
+const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(`Username: ${username}, Password: ${password}`)
+
+    const response = await fetch('http://localhost:4000/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({username, password}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const json = await response.json()
+    console.log(json)
+
+    if (response.ok) {
+      setUsername('')
+      setPassword('')
+      setError('')
+      navigate('/')
+    } else {
+      setError(json.error)
+    }
   }
 
   return (
@@ -27,7 +49,10 @@ const Login = (props) => {
         <button className='register-button'>Login</button>
       </form>
       
-      <span><Link to="/register">New to our app?</Link></span>
+      <span className='already-exist'><Link to="/register">New to our app?</Link></span>
+      {error && 
+      <span className="register-error">{error}</span>
+      }
     </div>
   )
 }

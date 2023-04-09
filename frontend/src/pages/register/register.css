@@ -11,7 +11,7 @@
     padding: 10px;
     padding-left: 20px;
     background: var(--dark-gray-1);
-    border-radius: 15px;
+    border-radius: 10px;
     color: var(--primary-color);
     font-weight: 600;
     background-position: right;
@@ -37,7 +37,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.register-container span {
+.already-exist {
     width: fit-content;
     margin: auto;
     display: block;
@@ -45,7 +45,20 @@ h1 {
     opacity: 65%;
 }
 
-.register-container span:hover {
+.already-exist:hover {
     cursor: pointer;
     opacity: 100%;
+}
+
+.register-error {
+    color: var(--color-error);
+    width: fit-content;
+    margin: auto;
+    display: block;
+    border: 2px solid var(--color-error);
+    padding: 5px 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: rgba(250, 163, 250, .1);
+    font-weight: 400;
 }
