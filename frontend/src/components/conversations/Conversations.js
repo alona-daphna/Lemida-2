@@ -3,7 +3,7 @@ import './conversations.css'
 import { BiSearch } from 'react-icons/bi';
 import { useState } from 'react';
 
-const Conversations = () => {
+const Conversations = ({ onConversationClick }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +42,7 @@ const Conversations = () => {
             </form>
             <div className="chats">
                 {contacts.filter(function (el) {return el.name.toLowerCase().includes(searchInput.toLowerCase())}).map((contact, index) => (
-                    <Contact key={index} name={contact.name} lastMsg={contact.lastMsg} time={contact.time} picture={contact.picture}/>
+                    <Contact key={index} name={contact.name} lastMsg={contact.lastMsg} time={contact.time} picture={contact.picture} onConversationClicked={onConversationClick}/>
                 ))}
             </div>
         </div>

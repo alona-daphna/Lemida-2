@@ -53,9 +53,3 @@
     background: #28292e;
     max-height: 95%;
 }
-
-@media (max-width: 650px) {
-    .conversations {
-        display: none;
-    }
-}

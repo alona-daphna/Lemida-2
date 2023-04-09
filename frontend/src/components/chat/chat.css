@@ -1,3 +1,11 @@
+.chat {
+    max-height: 95%;
+    display: grid;
+    grid-template-rows: 12% 75% 13%;
+    background: #191a1c;
+    overflow: hidden;
+}
+
 .top-bar, .bottom-bar {
     border: 1px solid #fff;
     display: flex;
@@ -29,14 +37,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-.chat {
-    max-height: 95%;
-    display: grid;
-    grid-template-rows: 12% 75% 13%;
-    background: #191a1c;
-    overflow: hidden;
 }
 
 .search-chat-button, .more-button {
