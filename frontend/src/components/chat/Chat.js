@@ -1,6 +1,6 @@
 import Message from '../message/Message';
 import './chat.css'
-import { IoSend } from 'react-icons/io5';
+import { IoSend, IoArrowBack } from 'react-icons/io5';
 import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ const Chat = ({ onBackClick }) => {
     return ( 
         <div className="chat">
             <div className="top-bar">
-                <button className='back' onClick={onBackClick}>Back</button>
+                <button className='back' onClick={onBackClick}><IoArrowBack></IoArrowBack></button>
                 <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic"/>
                 <div className='info'>
                     <p className='chat-name'>MERN Lemida Project 🤓</p>

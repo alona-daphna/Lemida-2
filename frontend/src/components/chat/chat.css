@@ -41,6 +41,8 @@
 
 .search-chat-button, .more-button {
     margin: 0 10px 0 0;
+    font-size: 150%;
+    cursor: pointer;
 }
 
 .chat-body {
@@ -54,10 +56,11 @@ button.back {
 
 @media (max-width: 650px) {
     button.back {
-        display: inline;
+        display: flex;
         cursor: pointer;
         background: inherit;
         margin-left: 10px;
+        font-size: 150%;
     }
 }
 
