@@ -1,5 +1,34 @@
 .top-bar, .bottom-bar {
     border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+}
+
+.top-bar {
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.top-bar .profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 0 0 10px;
+}
+
+.chat-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+}
+  
+.chat-info {
+    font-size: 0.85em;
+    color: #888;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .chat {
@@ -8,6 +37,10 @@
     grid-template-rows: 12% 75% 13%;
     background: #191a1c;
     overflow: hidden;
+}
+
+.search-chat-button, .more-button {
+    margin: 0 10px 0 0;
 }
 
 .chat-body {
@@ -24,7 +57,7 @@ button.back {
         display: inline;
         cursor: pointer;
         background: inherit;
-        margin-right: 10px;
+        margin-left: 10px;
     }
 }
 

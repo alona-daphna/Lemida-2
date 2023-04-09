@@ -1,6 +1,7 @@
 import Message from '../message/Message';
 import './chat.css'
 import { IoSend } from 'react-icons/io5';
+import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
 import { useState } from 'react';
 
 const Chat = () => {
@@ -29,8 +30,14 @@ const Chat = () => {
     return ( 
         <div className="chat">
             <div className="top-bar">
-                <button className='back'>back</button>
-                topbar
+                <button className='back'>Back</button>
+                <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic"/>
+                <div className='info'>
+                    <p className='chat-name'>MERN Lemida Project 🤓</p>
+                    <p className='chat-info'>Tap here for group info</p>
+                </div>
+                <CgSearch className='search-chat-button'></CgSearch>
+                <CgMoreVerticalAlt className='more-button'></CgMoreVerticalAlt>
             </div>
             
             <div className="chat-body">
