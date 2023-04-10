@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie';
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -10,7 +9,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Username: ${username}, Password: ${password}`)
 
     const response = await fetch('http://localhost:4000/api/auth/login', {
       method: 'POST',
@@ -20,8 +18,6 @@ const Login = () => {
       },
       credentials: 'include'
     })
-    const jwt = Cookies.get('jwt')
-
 
     const json = await response.json()
     console.log(json)

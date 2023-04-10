@@ -18,9 +18,19 @@ const Home = () => {
     };
 
     useEffect(() => {
+        const fetchConversations = async() => {
+            const response = await fetch("http://localhost:4000/api/chats", {
+                credentials: 'include'
+            })
+            const json = await response.json()
+            console.log('Chats:', json)
+        }
+
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth <= 650);
         };
+
+        fetchConversations()
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => {
