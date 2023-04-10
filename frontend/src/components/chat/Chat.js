@@ -30,19 +30,23 @@ const Chat = ({ onBackClick }) => {
     return ( 
         <div className="chat">
             <div className="top-bar">
-                <button className='back' onClick={onBackClick}><IoArrowBack></IoArrowBack></button>
+                <button className='back' onClick={onBackClick}><IoArrowBack /></button>
                 <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic"/>
                 <div className='info'>
                     <p className='chat-name'>MERN Lemida Project 🤓</p>
                     <p className='chat-info'>Tap here for group info</p>
                 </div>
-                <CgSearch className='search-chat-button'></CgSearch>
-                <CgMoreVerticalAlt className='more-button'></CgMoreVerticalAlt>
+                <CgSearch className='search-chat-button' />
+                <CgMoreVerticalAlt className='more-button' />
             </div>
             
             <div className="chat-body">
                 {messages.map((message, index) => (
-                    <Message key={index} message={message.text} isMine={message.sent} />
+                    <Message 
+                        key={index} 
+                        message={message.text} 
+                        isMine={message.sent} 
+                    />
                 ))}
             </div>
 
