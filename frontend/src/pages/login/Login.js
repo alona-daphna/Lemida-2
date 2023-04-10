@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -16,8 +17,11 @@ const Login = () => {
       body: JSON.stringify({username, password}),
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      credentials: 'include'
     })
+    const jwt = Cookies.get('jwt')
+
 
     const json = await response.json()
     console.log(json)
