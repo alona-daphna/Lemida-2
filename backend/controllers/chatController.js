@@ -91,7 +91,9 @@ const updateChat = async (req, res) => {
     }
 
     if (!name) return res.status(400).json({error: 'Please provide a new chat name'})
-    if (!members) return res.status(400).json({error: 'Please provide an updated members array'})
+    if (!members || !Array.isArray(members) || members.length < 1) {
+        return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
+    }
 
     // add current logged in user to members array
     if (!members.includes(req.userId)) members.push(req.userId)
