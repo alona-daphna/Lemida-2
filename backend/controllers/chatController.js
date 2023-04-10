@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const validateIds = async (ids, collection, object) => {
     // check that ids are valid mongoose object ids
     if (!ids.every(id => mongoose.Types.ObjectId.isValid(id))) {
-        return { status: 400, error: `Invalid ${object} id(s)` };object
+        return { status: 400, error: `Invalid ${object} id(s)` };
       }
 
     // check that all ids exist in the specified collection
@@ -16,9 +16,7 @@ const validateIds = async (ids, collection, object) => {
     }
 
     return {status: 200};
-
 }
-
 
 // get details for a single chat including participants and chat history
 const getChat = async (req, res) => {
@@ -55,7 +53,7 @@ const getUserChats = async (req, res) => {
 
 // create a new chat with the specified user ids
 const createChat = async (req, res) => {
-    const { name, members } = req.body;
+    let { name, members } = req.body;
 
     if (!name) {
         return res.status(400).json({ error: 'Please provide a name for the chat'})
@@ -63,9 +61,12 @@ const createChat = async (req, res) => {
     if (!members || !Array.isArray(members) || members.length < 1) {
         return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
     }
-    
+
     // add the user creating the chat to the members array
     members.push(req.userId);
+
+    // Removing duplicated members
+    members = [...new Set(members)]
 
     const { status, error } = await validateIds(members, User, 'member');
     if (status === 400) return res.status(400).json({ error })
@@ -85,18 +86,23 @@ const createChat = async (req, res) => {
 
 // update chat name, list of participants
 const updateChat = async (req, res) => {
-    const {name, members} = req.body
+    let {name, members} = req.body
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid chat ID.' });
     }
 
-    if (!name) return res.status(400).json({error: 'Please provide a new chat name'})
+    if (!name) {
+        return res.status(400).json({error: 'Please provide a new chat name'})
+    }
     if (!members || !Array.isArray(members) || members.length < 1) {
         return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
     }
 
     // add current logged in user to members array
     if (!members.includes(req.userId)) members.push(req.userId)
+
+    // Removing duplicated members
+    members = [...new Set(members)]
 
     const { status, error } = await validateIds(members, User, 'member');
     if (status === 400) return res.status(400).json({ error })
@@ -152,8 +158,6 @@ const createMessage = async (req, res) => {
         console.log(error)
         return res.status(500).json({error: 'Failed to create message'})
     }
-
-
 }
 
 // delete chat
