@@ -6,10 +6,10 @@ const dotenv = require('dotenv').config({ path: __dirname + '\\..\\..\\.env' });
 const registerUser = async (req, res) => {
     const { username, password } = req.body;
 
-    if (username.length == 0) {
+    if (!username || username.length == 0) {
         return res.status(401).json({error: 'Username is required'});
     } 
-    if (password.length == 0) {
+    if (!password || password.length == 0) {
         return res.status(401).json({error: 'Password is required'});
     }
 
@@ -41,10 +41,10 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
-    if (username.length == 0) {
+    if (!username || username.length == 0) {
         return res.status(401).json({error: 'Username is required'});
     } 
-    if (password.length == 0) {
+    if (!password || password.length == 0) {
         return res.status(401).json({error: 'Password is required'});
     }
 

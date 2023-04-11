@@ -21,6 +21,7 @@ body {
 :root {
   --primary-color:rgb(67, 58, 230);
   --color-purple-light: rgb(154, 146, 242);
+  --color-error: #f53252; 
   --dark-gray-1: #343434;
   --dark-gray-2: #3c3c3c;
 }

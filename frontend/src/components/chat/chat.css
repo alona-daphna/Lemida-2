@@ -1,17 +1,52 @@
-.top-bar, .bottom-bar {
-    border: 1px solid #fff;
-}
-
 .chat {
     max-height: 95%;
     display: grid;
     grid-template-rows: 12% 75% 13%;
     background: #191a1c;
+    overflow: hidden;
+}
+
+.top-bar, .bottom-bar {
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+}
+
+.top-bar {
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.top-bar .profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 0 0 10px;
+}
+
+.chat-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1.1em;
+}
+  
+.chat-info {
+    font-size: 0.85em;
+    color: #888;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.search-chat-button, .more-button {
+    margin: 0 10px 0 0;
+    font-size: 150%;
+    cursor: pointer;
 }
 
 .chat-body {
     border: 1px solid #fff;
-    overflow: hidden;
     overflow-y: auto;
 }
 
@@ -21,10 +56,11 @@ button.back {
 
 @media (max-width: 650px) {
     button.back {
-        display: inline;
+        display: flex;
         cursor: pointer;
         background: inherit;
-        margin-right: 10px;
+        margin-left: 10px;
+        font-size: 150%;
     }
 }
 
