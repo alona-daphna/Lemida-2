@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import React from 'react';
 
 // components
@@ -11,8 +11,8 @@ import Navbar from './components/navbar/Navbar';
 import { UserContext } from './context/userContext';
 
 function App() {
-  const {user, setUser} = useContext(UserContext);
-
+  const {user} = useContext(UserContext);
+  console.log(user)
   return (
 
     <BrowserRouter>
