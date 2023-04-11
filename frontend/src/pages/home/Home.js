@@ -8,6 +8,7 @@ const Home = () => {
 
     const [showConversations, setShowConversations] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(window.matchMedia('(max-width: 650px)').matches);
+    const [conversations, setConversations] = useState([])
 
     const handleConversationClick = () => {
         setShowConversations(false);
@@ -22,8 +23,23 @@ const Home = () => {
             const response = await fetch("http://localhost:4000/api/chats", {
                 credentials: 'include'
             })
-            const json = await response.json()
-            console.log('Chats:', json)
+            const chatsJson = await response.json()
+
+            const chatsFiltered = chatsJson.map(chat => {
+                const lastMessage = chat.message_history.slice(-1)[0];
+                const date = lastMessage ? new Date(lastMessage.createdAt) : "";
+                const hour = date ? date.getHours().toString().padStart(2, "0") : "";
+                const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";
+                return {
+                    "name": chat.name,
+                    "lastMsg": lastMessage ? lastMessage.text : "",
+                    "time": date ? `${hour}:${minute}` : "",
+                    // To change to real images
+                    "picture": chat.name==="Ido" ? "https://shorturl.at/dfpzV" : ""
+                };
+            });
+
+            setConversations(chatsFiltered)
         }
 
         const handleResize = () => {
@@ -43,13 +59,13 @@ const Home = () => {
             {
                 isSmallScreen ? (
                     showConversations ? (
-                        <Conversations onConversationClick={handleConversationClick} />
+                        <Conversations conversations={conversations} onConversationClick={handleConversationClick} />
                     ) : (
                         <Chat onBackClick={handleBackClick} />
                     )
                 ) : (
                     <>
-                        <Conversations onConversationClick={handleConversationClick} />
+                        <Conversations conversations={conversations} onConversationClick={handleConversationClick} />
                         <Chat />
                     </>
                 )
