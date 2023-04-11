@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './register.css'
 import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../../context/userContext'
+
 
 const Register = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const {setUser} = useContext(UserContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +20,8 @@ const Register = () => {
       body: JSON.stringify({username, password}),
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      // credentials: 'include'
     })
 
     const json = await response.json()
@@ -29,9 +33,11 @@ const Register = () => {
         body: JSON.stringify({username, password}),
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+      credentials: 'include'
       })
       if (response2.ok) {
+        setUser(json)
         navigate('/')
         setUsername('')
         setPassword('')
