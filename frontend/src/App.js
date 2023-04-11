@@ -9,6 +9,7 @@ import Register from './pages/register/Register';
 import Login from './pages/login/Login'
 import Navbar from './components/navbar/Navbar';
 import { UserContext } from './context/userContext';
+import NotFound from './pages/notfound/NotFound';
 
 function App() {
   const {user} = useContext(UserContext);
@@ -18,9 +19,10 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-          <Route path='/' element={user ? <Home /> : <Register />}/>
+        <Route path='/' element={user ? <Home /> : <Register />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   );
