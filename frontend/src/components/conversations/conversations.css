@@ -39,6 +39,7 @@
     display: flex;
     border-bottom: 1px solid #ccc;
     padding: 10px 10px;
+    align-items: center;
 }
 
 .chats {
@@ -57,19 +58,7 @@
     .conversations {
         display: grid;
         grid-template-rows: 12% 75% 13%;
-    }
-    
-    .search-input {
-        /* fix border size issue on hover */
-        height: 42px;
-    }
-
-    .search-form {
-        align-items: center;
-    }
-    
-    .create-chat button  {
-        height: 12%;
+        height: 95%;
     }
 }
 
