@@ -32,10 +32,6 @@ app.use('/api/users', userRoutes)
 app.use('/api/chats', requireAuth, chatRoutes)
 app.use('/api/auth', authRoutes)
 
-app.get('/', (req, res) => {
-    res.send('hi')
-})
-
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })

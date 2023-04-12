@@ -12,3 +12,22 @@ h3 {
     font-size: 1.7rem;
     color: rgb(105, 98, 235);
 }
+
+.logout button {
+    cursor: pointer;
+    background: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.logout button:hover {
+    background: var(--color-purple-light);
+}
+
+.navbar-right {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
