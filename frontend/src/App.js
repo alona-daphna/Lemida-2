@@ -44,7 +44,6 @@ function App() {
         <Route path='/' element={isLoading ? <Loading /> : user ? <Home /> : <Register />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='loading' element={<Loading />} />
         <Route path='*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
