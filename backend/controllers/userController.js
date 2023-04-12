@@ -47,12 +47,14 @@ const updateUser = async (req, res) => {
 
 // delete user
 const deleteUser = async (req, res) => {
+    if (req.userId !== req.params.id) return res.status(403).json({error: 'User is not authorized to delete other users'})
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid user ID.' });
     }
     try {
         const user = await User.findOneAndDelete({ _id: req.params.id }).select({password: false});
         if(!user) return res.status(404).json({error: 'User not found'})
+        res.cookie('jwt', '', { maxAge: 1 });
         res.status(200).json(user);    
     } catch (error) {
         console.log(error)
