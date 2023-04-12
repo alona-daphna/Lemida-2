@@ -2,7 +2,7 @@ import Message from '../message/Message';
 import './chat.css'
 import { IoSend, IoArrowBack } from 'react-icons/io5';
 import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const Chat = ({ onBackClick }) => {
 
@@ -20,6 +20,16 @@ const Chat = ({ onBackClick }) => {
         { text: "Also frontend", sent: true },
         { text: "Backend is the best 🤡", sent: false },
     ])
+
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,6 +58,7 @@ const Chat = ({ onBackClick }) => {
                         isMine={message.sent} 
                     />
                 ))}
+                <div ref={messagesEndRef} /> 
             </div>
 
             <form className="bottom-bar" onSubmit={handleSubmit}>
