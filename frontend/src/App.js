@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import React from 'react';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
@@ -15,11 +15,10 @@ import NotFound from './pages/notfound/NotFound';
 
 function App() {
   const {user, setUser} = useContext(UserContext);
+  const [loading, setLoading] = useState(true)
   console.log(user)
 
   useEffect(() => {
-    // to prevent register page from showing for a split second when we do have a user
-    setUser(true)
     const fetchUser = async () => {
       const token = Cookies.get('jwt')
       if (token) {
@@ -29,6 +28,7 @@ function App() {
         const json = await response.json()
         setUser(json)
       }  
+      setLoading(false)
     }
 
     fetchUser()
@@ -39,7 +39,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Register />}/>
+        <Route path='/' element={loading ? <></> : (user ? <Home /> : <Register />)}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='*' element={<NotFound/>}/>
