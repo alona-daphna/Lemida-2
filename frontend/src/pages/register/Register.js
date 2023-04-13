@@ -9,7 +9,7 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const {setUser} = useContext(UserContext)
+  const { setUser } = useContext(UserContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +17,7 @@ const Register = () => {
 
     const response = await fetch('http://localhost:4000/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify({ username, password }),
       headers: {
         'Content-Type': 'application/json'
       },
@@ -30,11 +30,11 @@ const Register = () => {
     if (response.ok) {
       const response2 = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({username, password}),
+        body: JSON.stringify({ username, password }),
         headers: {
           'Content-Type': 'application/json'
         },
-      credentials: 'include'
+        credentials: 'include'
       })
       if (response2.ok) {
         setUser(json)
@@ -42,7 +42,7 @@ const Register = () => {
         setUsername('')
         setPassword('')
         setError('')
-        } 
+      }
     } else {
       setError(json.error)
     }
@@ -52,24 +52,24 @@ const Register = () => {
     <div className='register-container'>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
+        <input
+          type="text"
           placeholder='username'
-          value={username} 
+          value={username}
           onChange={(e) => setUsername(e.target.value)} />
-        <input 
-          type="password" 
+        <input
+          type="password"
           placeholder='password'
-          value={password} 
+          value={password}
           onChange={(e) => setPassword(e.target.value)} />
         <button className='register-button'>Register</button>
       </form>
-      
+
       <span className='already-exist'><Link to="/login">Already have an account?</Link></span>
-      {error && 
-      <span className="register-error">{error}</span>
+      {error &&
+        <span className="register-error">{error}</span>
       }
-      
+
     </div>
   )
 }
