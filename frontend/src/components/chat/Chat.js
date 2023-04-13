@@ -43,7 +43,7 @@ const Chat = ({ onBackClick }) => {
         if (userAtBottom) {
             scrollToBottom()
         }
-    }, [messages])
+    }, [messages, userAtBottom])
     
     const handleSubmit = async (e) => {
         e.preventDefault();
