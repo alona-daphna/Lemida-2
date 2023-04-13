@@ -18,6 +18,8 @@ function App() {
   console.log(user)
 
   useEffect(() => {
+    // to prevent register page from showing for a split second when we do have a user
+    setUser(true)
     const fetchUser = async () => {
       const token = Cookies.get('jwt')
       if (token) {
