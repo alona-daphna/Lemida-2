@@ -51,6 +51,7 @@ const Chat = ({ onBackClick }) => {
             setUserAtBottom( isScrolledToBottom() )
             setMessages([...messages, {text: message, sent: true}])
         }
+        setMessage('')
     }
     return ( 
         <div className="chat">
@@ -77,7 +78,7 @@ const Chat = ({ onBackClick }) => {
             </div>
 
             <form className="bottom-bar" onSubmit={handleSubmit}>
-                <input className='message' type="text" placeholder='Type a message' onChange={(e) => setMessage(e.target.value)}/>
+                <input className='message' type="text" placeholder='Type a message' value={message} onChange={(e) => setMessage(e.target.value)}/>
                 <button className="send"><IoSend /></button>
             </form>
         </div>
