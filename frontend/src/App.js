@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import React from 'react';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
@@ -12,11 +12,10 @@ import Login from './pages/login/Login'
 import Navbar from './components/navbar/Navbar';
 import { UserContext } from './context/userContext';
 import NotFound from './pages/notfound/NotFound';
-import Loading from './pages/loading/Loading';
 
 function App() {
   const {user, setUser} = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(true)
+  console.log(user)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,9 +26,6 @@ function App() {
         const response = await fetch(`http://localhost:4000/api/users/${userId}`)
         const json = await response.json()
         setUser(json)
-        setTimeout(() => {
-          setIsLoading(false)
-        }, 1500)
       }  
     }
 
@@ -41,7 +37,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path='/' element={isLoading ? <Loading /> : user ? <Home /> : <Register />}/>
+        <Route path='/' element={user ? <Home /> : <Register />}/>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='*' element={<NotFound/>}/>
