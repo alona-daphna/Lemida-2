@@ -22,6 +22,7 @@ const Chat = ({ onBackClick }) => {
     ])
 
     const messagesEndRef = useRef(null)
+    const formRef = useRef(null)
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -36,6 +37,7 @@ const Chat = ({ onBackClick }) => {
         if (message) {
             setMessages([...messages, {text: message, sent: true}])
         }
+        formRef.current.reset()
     }
     return ( 
         <div className="chat">
@@ -61,7 +63,7 @@ const Chat = ({ onBackClick }) => {
                 <div ref={messagesEndRef} /> 
             </div>
 
-            <form className="bottom-bar" onSubmit={handleSubmit}>
+            <form className="bottom-bar" onSubmit={handleSubmit} ref={formRef}>
                 <input className='message' type="text" placeholder='Type a message' onChange={(e) => setMessage(e.target.value)}/>
                 <button className="send"><IoSend /></button>
             </form>
