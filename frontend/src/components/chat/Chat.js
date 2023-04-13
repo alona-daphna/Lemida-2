@@ -21,19 +21,34 @@ const Chat = ({ onBackClick }) => {
         { text: "Backend is the best 🤡", sent: false },
     ])
 
+    const [userAtBottom, setUserAtBottom] = useState(true)
+
     const messagesEndRef = useRef(null)
+    const chatBodyRef = useRef(null)
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
+    const isScrolledToBottom = () => {
+        const scrollTop = chatBodyRef.current.scrollTop
+        const scrollHeight = chatBodyRef.current.scrollHeight
+        const clientHeight = chatBodyRef.current.clientHeight
+        
+        // thershold is set to about one message
+        return Math.abs(scrollHeight - clientHeight - scrollTop) < 50
+    }
+    
     useEffect(() => {
-        scrollToBottom()
-    }, [messages])
-
+        if (userAtBottom) {
+            scrollToBottom()
+        }
+    }, [messages, userAtBottom])
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message) {
+            setUserAtBottom( isScrolledToBottom() )
             setMessages([...messages, {text: message, sent: true}])
         }
     }
@@ -50,7 +65,7 @@ const Chat = ({ onBackClick }) => {
                 <CgMoreVerticalAlt className='more-button' />
             </div>
             
-            <div className="chat-body">
+            <div className="chat-body" ref={chatBodyRef}>
                 {messages.map((message, index) => (
                     <Message 
                         key={index} 
