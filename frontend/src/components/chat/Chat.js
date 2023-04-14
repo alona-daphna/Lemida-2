@@ -2,9 +2,11 @@ import Message from '../message/Message';
 import './chat.css'
 import { IoSend, IoArrowBack } from 'react-icons/io5';
 import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { ChosenChatContext } from '../../context/chosenChatContext';
 
 const Chat = ({ onBackClick }) => {
+    const {chosenChat} = useContext(ChosenChatContext)
 
     const [message, setMessage] = useState('')
 
@@ -51,7 +53,23 @@ const Chat = ({ onBackClick }) => {
             setUserAtBottom( isScrolledToBottom() )
             setMessages([...messages, {text: message, sent: true}])
         }
+
+        // save message to db
+        const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}/messages`, {
+            method: 'POST',
+            body: JSON.stringify({
+                "text":  message
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+
+        console.log(await response.json())
+
         setMessage('')
+
     }
     return ( 
         <div className="chat">

@@ -6,7 +6,6 @@ import { ChatContext } from "../../context/chatListContext";
 
 const Conversations = ({ onConversationClick }) => {
     const [searchInput, setSearchInput] = useState('')
-    const [conversations, setConversations] = useState([])
 
     const { chats, dispatch: setChatList } = useContext(ChatContext)
 
@@ -54,6 +53,7 @@ const Conversations = ({ onConversationClick }) => {
                 const hour = date ? date.getHours().toString().padStart(2, "0") : "";
                 const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";
                 return {
+                    "id": chat._id,
                     "name": chat.name,
                     "lastMsg": lastMessage ? lastMessage.text : "",
                     "time": date ? `${hour}:${minute}` : "",
@@ -66,7 +66,6 @@ const Conversations = ({ onConversationClick }) => {
                 type: 'SET_CHATS',
                 payload: chatsFiltered
             })
-            setConversations(chatsFiltered)
         }
 
         fetchConversations();
@@ -83,6 +82,7 @@ const Conversations = ({ onConversationClick }) => {
                     chats.filter(function (el) {return el.name.toLowerCase().includes(searchInput.toLowerCase())}).map((contact, index) => (
                         <Contact 
                             key={index} 
+                            id={contact.id}
                             name={contact.name} 
                             lastMsg={contact.lastMsg} 
                             time={contact.time} 
