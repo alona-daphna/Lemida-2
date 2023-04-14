@@ -15,6 +15,7 @@ const Chat = ({ onBackClick }) => {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState(null)
     const [userAtBottom, setUserAtBottom] = useState(true)
+    const [currentChat, setCurrentChat] = useState(null)
 
     const messagesEndRef = useRef(null)
     const chatBodyRef = useRef(null)
@@ -47,6 +48,7 @@ const Chat = ({ onBackClick }) => {
                     credentials: 'include'
                 })
                 const chat = await response.json()
+                setCurrentChat(chat)
                 setMessages(chat.message_history)
             }
         }
@@ -104,8 +106,12 @@ const Chat = ({ onBackClick }) => {
                         <button className='back' onClick={onBackClick}><IoArrowBack /></button>
                         <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" />
                         <div className='info'>
-                            <p className='chat-name'>MERN Lemida Project 🤓</p>
+                        {currentChat && 
+                        <div>
+                            <p className='chat-name'>{currentChat.name}</p>
                             <p className='chat-info'>Tap here for group info</p>
+                        </div>
+                        }
                         </div>
                         <CgSearch className='search-chat-button' />
                         <CgMoreVerticalAlt className='more-button' />
