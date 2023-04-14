@@ -10,18 +10,19 @@ const Chat = ({ onBackClick }) => {
 
     const [message, setMessage] = useState('')
 
-    const [messages, setMessages] = useState([
-        { text: "Hey, how's it going?", sent: true },
-        { text: "I'm doing well, thanks for asking!", sent: false },
-        { text: "What have you been up to lately?", sent: true },
-        { text: "Not much, just hanging out with friends.", sent: false },
-        { text: "ChatGPT is the best!", sent: true },
-        { text: "Very helpful with FullStack development :)", sent: false },
-        { text: "Hi MERN webapp", sent: true },
-        { text: "CSS is shit", sent: true },
-        { text: "Also frontend", sent: true },
-        { text: "Backend is the best 🤡", sent: false },
-    ])
+    // const [messages, setMessages] = useState([
+    //     { text: "Hey, how's it going?", sent: true },
+    //     { text: "I'm doing well, thanks for asking!", sent: false },
+    //     { text: "What have you been up to lately?", sent: true },
+    //     { text: "Not much, just hanging out with friends.", sent: false },
+    //     { text: "ChatGPT is the best!", sent: true },
+    //     { text: "Very helpful with FullStack development :)", sent: false },
+    //     { text: "Hi MERN webapp", sent: true },
+    //     { text: "CSS is shit", sent: true },
+    //     { text: "Also frontend", sent: true },
+    //     { text: "Backend is the best 🤡", sent: false },
+    // ])
+    const [messages, setMessages] = useState(null)
 
     const [userAtBottom, setUserAtBottom] = useState(true)
 
@@ -46,6 +47,20 @@ const Chat = ({ onBackClick }) => {
             scrollToBottom()
         }
     }, [messages, userAtBottom])
+
+    useEffect(() => {
+        // fetch chat message history
+        const fetchMessages = async () => {
+            const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}`, {
+                credentials: 'include'
+            })
+            const chat = await response.json()
+            console.log(chat.message_history)
+            setMessages(chat.message_history)
+        }
+
+        fetchMessages()
+    }, [chosenChat])
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -85,11 +100,11 @@ const Chat = ({ onBackClick }) => {
             </div>
             
             <div className="chat-body" ref={chatBodyRef}>
-                {messages.map((message, index) => (
+                {messages && messages.map((message, index) => (
                     <Message 
                         key={index} 
                         message={message.text} 
-                        isMine={message.sent} 
+                        // isMine={message.sent} 
                     />
                 ))}
                 <div ref={messagesEndRef} /> 
