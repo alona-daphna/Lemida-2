@@ -5,8 +5,6 @@ import { ChosenChatContext } from '../../context/chosenChatContext';
 
 const Contact = ({ id, name, lastMsg, time, picture, onConversationClicked }) => {
 
-    // only prop should be chat object itself
-    // move logic of formatting chat to here
     const {setChosenChat} = useContext(ChosenChatContext)
     
     const handleContactClick = () => {
