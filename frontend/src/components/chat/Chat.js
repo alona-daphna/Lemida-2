@@ -5,27 +5,15 @@ import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
+import { SocketContext } from '../../context/socketContext';
 
 const Chat = ({ onBackClick }) => {
     const { chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
+    const { socket } = useContext(SocketContext)
 
     const [message, setMessage] = useState('')
-
-    // const [messages, setMessages] = useState([
-    //     { text: "Hey, how's it going?", sent: true },
-    //     { text: "I'm doing well, thanks for asking!", sent: false },
-    //     { text: "What have you been up to lately?", sent: true },
-    //     { text: "Not much, just hanging out with friends.", sent: false },
-    //     { text: "ChatGPT is the best!", sent: true },
-    //     { text: "Very helpful with FullStack development :)", sent: false },
-    //     { text: "Hi MERN webapp", sent: true },
-    //     { text: "CSS is shit", sent: true },
-    //     { text: "Also frontend", sent: true },
-    //     { text: "Backend is the best 🤡", sent: false },
-    // ])
     const [messages, setMessages] = useState(null)
-
     const [userAtBottom, setUserAtBottom] = useState(true)
     const [currentChat, setCurrentChat] = useState(null)
 
@@ -62,6 +50,7 @@ const Chat = ({ onBackClick }) => {
                 const chat = await response.json()
                 setCurrentChat(chat)
                 console.log(chat.message_history)
+
                 setMessages(chat.message_history)
             }
         }
@@ -69,12 +58,29 @@ const Chat = ({ onBackClick }) => {
         fetchMessages()
     }, [chosenChat])
 
+    useEffect(() => {
+        // it sends twice to sender, shouldt go here for sender
+        socket.on('new-message', (message) => {
+            setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender }]);
+            console.log('new message')
+        })
+
+        return () => {
+            socket.off('new-message');
+        }
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message) {
             setUserAtBottom(isScrolledToBottom())
-            setMessages([...messages, { text: message, sender: user._id }])
+            
+            socket.emit('send-message', {
+                room: chosenChat, 
+                message: { text: message, sender: user._id}
+            })
 
+            setMessages([...messages, { text: message, sender: user._id }])
 
             // save message to db
             const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}/messages`, {

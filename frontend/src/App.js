@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import React from 'react';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
+import io from 'socket.io-client';
 
 // components
 import Home from './pages/home/Home';
@@ -11,14 +12,18 @@ import Register from './pages/register/Register';
 import Login from './pages/login/Login'
 import Navbar from './components/navbar/Navbar';
 import { UserContext } from './context/userContext';
+import { SocketContext } from './context/socketContext';
 import NotFound from './pages/notfound/NotFound';
 
 function App() {
   const {user, setUser} = useContext(UserContext);
+  const {setSocket} = useContext(SocketContext)
   const [loading, setLoading] = useState(true)
-  console.log(user)
 
   useEffect(() => {
+    const newSocket = io('http://localhost:4000')
+    setSocket(newSocket)
+
     const fetchUser = async () => {
       const token = Cookies.get('jwt')
       if (token) {
@@ -32,6 +37,11 @@ function App() {
     }
 
     fetchUser()
+
+    // clean up socket when component unmounts
+    return () => {
+      newSocket.disconnect()
+    }
   }, [])
 
   return (
