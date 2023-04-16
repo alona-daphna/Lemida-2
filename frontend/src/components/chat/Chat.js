@@ -50,7 +50,6 @@ const Chat = ({ onBackClick }) => {
                 const chat = await response.json()
                 setCurrentChat(chat)
                 console.log(chat.message_history)
-
                 setMessages(chat.message_history)
             }
         }
