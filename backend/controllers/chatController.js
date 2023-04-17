@@ -51,28 +51,38 @@ const getUserChats = async (req, res) => {
     }
 }
 
-// create a new chat with the specified user ids
+// create a new chat with the specified usernames
 const createChat = async (req, res) => {
     let { name, members } = req.body;
+    const user = await User.findById(req.userId)
 
     if (!name) {
         return res.status(400).json({ error: 'Please provide a name for the chat'})
     }  
-    if (!members || !Array.isArray(members) || members.length < 1) {
+    if (!members || !Array.isArray(members) || members.length < 1 || members.includes(user.username) && members.length == 1) {
         return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
     }
 
     // add the user creating the chat to the members array
-    members.push(req.userId);
+    members.push(user.username);
 
     // Removing duplicated members
     members = [...new Set(members)]
 
-    const { status, error } = await validateIds(members, User, 'member');
-    if (status === 400) return res.status(400).json({ error })
+    // validate usernames
+    const memberObjs = await User.find({ username: { $in: members } });
+    if (memberObjs.length !== members.length) return res.status(400).json(
+        { error: "Invalid username(s)" }
+    )
+
+    // convert usernames to ids
+    const memberIds = memberObjs.map(member => member._id)
+    console.log(memberIds)
+
+    
 
     try {
-        const chat = await Chat.create({ name, members });
+        const chat = await Chat.create({ name, members: memberIds });
         const populatedChat = await Chat.findById(chat._id).populate({
             path: 'members',
             select: '-password'
@@ -87,6 +97,8 @@ const createChat = async (req, res) => {
 // update chat name, list of participants
 const updateChat = async (req, res) => {
     let {name, members} = req.body
+    const user = await User.findById(req.userId)
+
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid chat ID.' });
     }
@@ -94,23 +106,31 @@ const updateChat = async (req, res) => {
     if (!name) {
         return res.status(400).json({error: 'Please provide a new chat name'})
     }
-    if (!members || !Array.isArray(members) || members.length < 1) {
+    if (!members || !Array.isArray(members) || members.length < 1 || members.includes(user.username) && members.length == 1) {
         return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
     }
 
     // add current logged in user to members array
-    if (!members.includes(req.userId)) members.push(req.userId)
+    if (!members.includes(user.username)) members.push(user.username)
 
     // Removing duplicated members
     members = [...new Set(members)]
+    console.log(members)
 
-    const { status, error } = await validateIds(members, User, 'member');
-    if (status === 400) return res.status(400).json({ error })
+    // validate usernames
+    const memberObjs = await User.find({ username: { $in: members } });
+    if (memberObjs.length !== members.length) return res.status(400).json(
+        { error: "Invalid username(s)" }
+    )
+
+    // convert usernames to ids
+    const memberIds = memberObjs.map(member => member._id)
+    console.log(memberIds)
 
     try {
         const chat = await Chat.findOneAndUpdate(
             {_id: req.params.id},
-            {name, members},
+            {name, members: memberIds},
             {new: true}
         ).populate({
             path: 'members',
