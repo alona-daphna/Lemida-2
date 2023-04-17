@@ -2,6 +2,7 @@ import Message from '../message/Message';
 import './chat.css'
 import { IoSend, IoArrowBack } from 'react-icons/io5';
 import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
+import { FiUnlock } from 'react-icons/fi';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
@@ -165,7 +166,12 @@ const Chat = ({ onBackClick }) => {
                 :
                 <>
                     <div className="no-chosen-chat">
-                        <h3>welcome</h3>
+                        <h className="welcome">Welcome</h>
+                        <h className="welcome-info">Send and receive messages in real time.</h>
+                        <div className="welcome-div">
+                            <FiUnlock className="unlock"/>
+                            <h className="decrypted">End-to-end decrypted 😉</h>
+                        </div>
                     </div>
                 </>
             }

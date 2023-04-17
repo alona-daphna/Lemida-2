@@ -91,3 +91,30 @@ button.send {
     padding: 0 10px;
     gap: 10px;
 }
+
+.no-chosen-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+}
+  
+.welcome {
+    font-size: 30px;
+}
+
+.welcome-info {
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.welcome-div {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.unlock {
+    margin-right: 5px;
+}
