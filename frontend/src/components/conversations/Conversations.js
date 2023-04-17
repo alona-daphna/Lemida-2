@@ -51,7 +51,9 @@ const Conversations = ({ onConversationClick }) => {
             "lastMsg": lastMessage ? lastMessage.text : "",
             "time": date ? `${hour}:${minute}` : "",
             // To change to real images
-            "picture": chat.name==="Ido" ? "https://shorturl.at/dfpzV" : ""
+            "picture": chat.name==="Ido" ? "https://shorturl.at/dfpzV" : "",
+            "createdAt": chat.createdAt,
+            "lastMsgDate": date
         };
     }
 

@@ -5,11 +5,18 @@ const chatReducer = (state, action) => {
     switch (action.type) {
         case 'SET_CHATS':
             return {
-                chats: action.payload
+                // arrange chat array by chat's latest createdAt/lastMsgDate in descending order
+                chats: action.payload.sort((a, b) => {
+                    const aLatestDate = a.lastMsgDate ? Math.max(new Date(a.createdAt), new Date(a.lastMsgDate)) : a.createdAt
+                    const bLatestDate = b.lastMsgDate ? Math.max(new Date(b.createdAt), new Date(b.lastMsgDate)) : b.createdAt
+                    // convert numeric values returned from Math.max to Date object, then do the comparison
+                    return new Date(bLatestDate) - new Date(aLatestDate) 
+                  })
             }
         case 'ADD_CHAT':
             return {
-                chats: [...state.chats, action.payload]
+                // add newly created chat to top
+                chats: [action.payload, ...state.chats]
             }
         case 'UPDATE_CHAT':
             return {
