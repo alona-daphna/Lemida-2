@@ -49,8 +49,20 @@ const Chat = ({ onBackClick }) => {
                 })
                 const chat = await response.json()
                 setCurrentChat(chat)
-                console.log(chat.message_history)
-                setMessages(chat.message_history)
+
+                const idToUsername = {};
+                chat.members.forEach(member => {
+                    idToUsername[member._id] = member.username;
+                });
+
+
+                const messagesWithUsername = chat.message_history.map(message => {
+                    const { sender, text, createdAt } = message;
+                    const username = idToUsername[sender];
+                    return { text, sender, username, createdAt };
+                });
+
+                setMessages(messagesWithUsername)
             }
         }
 
@@ -60,7 +72,7 @@ const Chat = ({ onBackClick }) => {
     useEffect(() => {
         // it sends twice to sender, shouldt go here for sender
         socket.on('new-message', (message) => {
-            setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender }]);
+            setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
             console.log('new message')
         })
 
@@ -73,14 +85,6 @@ const Chat = ({ onBackClick }) => {
         e.preventDefault();
         if (message) {
             setUserAtBottom(isScrolledToBottom())
-            
-            socket.emit('send-message', {
-                room: chosenChat, 
-                message: { text: message, sender: user._id}
-            })
-
-            setMessages([...messages, { text: message, sender: user._id }])
-
             // save message to db
             const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}/messages`, {
                 method: 'POST',
@@ -93,7 +97,15 @@ const Chat = ({ onBackClick }) => {
                 credentials: 'include'
             })
 
-            console.log(await response.json())
+            const updatedChat = await response.json();
+            const newMsg = updatedChat.message_history.slice(-1)[0];
+            const msgToAdd = { text: newMsg.text, sender: newMsg.sender, username: user.username, createdAt: newMsg.createdAt }
+            setMessages([...messages, msgToAdd])
+
+            socket.emit('send-message', {
+                room: chosenChat, 
+                message: msgToAdd
+            })
 
             setMessage('')
         }
@@ -124,6 +136,8 @@ const Chat = ({ onBackClick }) => {
                                 key={index}
                                 message={message.text}
                                 isMine={message.sender === user._id}
+                                time={message.createdAt}
+                                username={message.username}
                             />
                         ))}
                         <div ref={messagesEndRef} />
