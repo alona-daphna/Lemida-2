@@ -4,14 +4,16 @@ import { CgProfile } from 'react-icons/cg';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { SocketContext } from '../../context/socketContext';
 
-const Contact = ({ id, name, lastMsg, time, picture, onConversationClicked }) => {
+const Contact = ({ contact, onConversationClicked }) => {
 
     const {setChosenChat} = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
+    const {id, name, lastMsg, time, picture} = contact
     
     const handleContactClick = () => {
         onConversationClicked()
-        setChosenChat(id)
+        // set to chat object
+        setChosenChat(contact)
         
     }
 

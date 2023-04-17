@@ -19,7 +19,15 @@ const chatReducer = (state, action) => {
             }
         case 'DELETE_CHAT':
             return {
-                chats: state.chats.filter(chat => chat !== action.payload.id )
+                chats: state.chats.filter(chat => chat.id !== action.payload.id )
+            }
+        case 'PUSH_TO_TOP':
+            // receives a chat id
+            const id  = action.payload
+            const chatToPush = state.chats.find(chat => chat.id === id);
+            const remainingChats = state.chats.filter(chat => chat.id !== id )
+            return {
+                chats: [chatToPush, ...remainingChats]
             }
         default:
             return state

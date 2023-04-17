@@ -6,11 +6,13 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
 import { SocketContext } from '../../context/socketContext';
+import { ChatContext } from "../../context/chatListContext";
 
 const Chat = ({ onBackClick }) => {
     const { chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
+    const {chats: chats, dispatch: setChatList} = useContext(ChatContext)
 
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState(null)
@@ -43,8 +45,7 @@ const Chat = ({ onBackClick }) => {
         // fetch chat message history
         const fetchMessages = async () => {
             if (chosenChat) {
-
-                const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}`, {
+                const response = await fetch(`http://localhost:4000/api/chats/${chosenChat.id}`, {
                     credentials: 'include'
                 })
                 const chat = await response.json()
@@ -70,14 +71,19 @@ const Chat = ({ onBackClick }) => {
     }, [chosenChat])
 
     useEffect(() => {
-        // it sends twice to sender, shouldt go here for sender
         socket.on('new-message', (data) => {
             const { message, room } = data
-            console.log(room, "\n\n", chosenChat)
 
-            if (room === chosenChat) {
+            if (chosenChat && room === chosenChat.id) {
                 setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
             }
+            // update chosenchat's lastMsg and time props
+
+            // add chat to top of chatlist
+            setChatList({
+                type: 'PUSH_TO_TOP',
+                payload: room
+            })
 
         })
 
@@ -91,7 +97,7 @@ const Chat = ({ onBackClick }) => {
         if (message) {
             setUserAtBottom(isScrolledToBottom())
             // save message to db
-            const response = await fetch(`http://localhost:4000/api/chats/${chosenChat}/messages`, {
+            const response = await fetch(`http://localhost:4000/api/chats/${chosenChat.id}/messages`, {
                 method: 'POST',
                 body: JSON.stringify({
                     "text": message
@@ -108,11 +114,16 @@ const Chat = ({ onBackClick }) => {
             setMessages([...messages, msgToAdd])
 
             socket.emit('send-message', {
-                room: chosenChat, 
+                room: chosenChat.id, 
                 message: msgToAdd
             })
 
             setMessage('')
+
+            setChatList({
+                type: 'PUSH_TO_TOP',
+                payload: chosenChat.id
+            })
         }
     }
 
