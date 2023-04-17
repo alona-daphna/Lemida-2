@@ -82,11 +82,7 @@ const Conversations = ({ onConversationClick }) => {
                     chats.filter(function (el) {return el.name.toLowerCase().includes(searchInput.toLowerCase())}).map((contact, index) => (
                         <Contact 
                             key={index} 
-                            id={contact.id}
-                            name={contact.name} 
-                            lastMsg={contact.lastMsg} 
-                            time={contact.time} 
-                            picture={contact.picture} 
+                            contact={contact}
                             onConversationClicked={onConversationClick}
                         />
                     ))
