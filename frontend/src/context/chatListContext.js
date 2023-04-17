@@ -30,7 +30,7 @@ const chatReducer = (state, action) => {
             }
         case 'PUSH_TO_TOP':
             // receives a chat id
-            const {id, message}  = action.payload
+            const {id, message, senderName}  = action.payload
             let chatToPush = state.chats.find(chat => chat.id === id);
             
             // edit chat's lastMsg and time
@@ -38,7 +38,8 @@ const chatReducer = (state, action) => {
             const hour = date ? date.getHours().toString().padStart(2, "0") : "";
             const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";        
             chatToPush.time = `${hour}:${minute}`
-            chatToPush.lastMsg = message.text    
+            chatToPush.lastMsg = message.text
+            chatToPush.senderName = senderName
             
             const remainingChats = state.chats.filter(chat => chat.id !== id )
             return {

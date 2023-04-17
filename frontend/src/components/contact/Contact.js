@@ -8,7 +8,7 @@ const Contact = ({ contact, onConversationClicked }) => {
 
     const {setChosenChat} = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
-    const {id, name, lastMsg, time, picture} = contact
+    const {id, name, lastMsg, senderName, time, picture} = contact
     
     const handleContactClick = () => {
         onConversationClicked()
@@ -30,7 +30,7 @@ const Contact = ({ contact, onConversationClicked }) => {
                     : <CgProfile className="profile-picture"/>}
                 <div className="info">
                     <div className="name">{name}</div>
-                    <div className="last-message">{lastMsg}</div>
+                    <div className="last-message">{senderName ? senderName + ':' : null} {lastMsg}</div>
                 </div>
                 <div className="time">{time}</div>
             </div>

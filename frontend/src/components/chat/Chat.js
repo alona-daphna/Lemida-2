@@ -80,7 +80,7 @@ const Chat = ({ onBackClick }) => {
             // add chat to top of chatlist
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: {id: room, message: message}
+                payload: { id: room, message: message, senderName: message.username }
             })
 
         })
@@ -120,7 +120,7 @@ const Chat = ({ onBackClick }) => {
 
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: {id: chosenChat.id, message: msgToAdd}
+                payload: { id: chosenChat.id, message: msgToAdd, senderName: msgToAdd.username }
             })
         }
     }
