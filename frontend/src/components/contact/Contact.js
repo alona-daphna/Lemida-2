@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './contact.css';
 import { CgProfile } from 'react-icons/cg';
 import { ChosenChatContext } from '../../context/chosenChatContext';
@@ -13,9 +13,12 @@ const Contact = ({ id, name, lastMsg, time, picture, onConversationClicked }) =>
         onConversationClicked()
         setChosenChat(id)
         
+    }
+
+    useEffect(() => {
         // join socket room with chat id
         socket.emit('join-room', id)
-    }
+    }, [])
 
     return ( 
         <div onClick={handleContactClick}>

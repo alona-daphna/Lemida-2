@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
     socket.on('send-message', (data) => {
         const { room, message } = data
         // send message object to all chat members but sender
-        socket.broadcast.to(room).emit('new-message', message)
+        socket.broadcast.to(room).emit('new-message', {message: message, room: room})
     })
 })
 

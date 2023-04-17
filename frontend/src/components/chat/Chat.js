@@ -71,9 +71,14 @@ const Chat = ({ onBackClick }) => {
 
     useEffect(() => {
         // it sends twice to sender, shouldt go here for sender
-        socket.on('new-message', (message) => {
-            setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
-            console.log('new message')
+        socket.on('new-message', (data) => {
+            const { message, room } = data
+            console.log(room, "\n\n", chosenChat)
+
+            if (room === chosenChat) {
+                setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
+            }
+
         })
 
         return () => {
