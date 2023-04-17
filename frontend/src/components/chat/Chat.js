@@ -77,12 +77,10 @@ const Chat = ({ onBackClick }) => {
             if (chosenChat && room === chosenChat.id) {
                 setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
             }
-            // update chosenchat's lastMsg and time props
-
             // add chat to top of chatlist
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: room
+                payload: {id: room, message: message}
             })
 
         })
@@ -122,7 +120,7 @@ const Chat = ({ onBackClick }) => {
 
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: chosenChat.id
+                payload: {id: chosenChat.id, message: msgToAdd}
             })
         }
     }
