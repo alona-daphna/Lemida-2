@@ -120,7 +120,7 @@ const Chat = ({ onBackClick }) => {
 
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: { id: chosenChat.id, message: msgToAdd, senderName: msgToAdd.username }
+                payload: { id: chosenChat.id, message: msgToAdd, senderName: 'You' }
             })
         }
     }
