@@ -14,7 +14,6 @@ const ChatForm = ({ setShowChatForm }) => {
     const [error, setError] = useState('')
     const participantsRef = useRef(null);
 
-
     useEffect(() => {
         if (participantsRef.current) {
             participantsRef.current.scrollTop = participantsRef.current.scrollHeight;
