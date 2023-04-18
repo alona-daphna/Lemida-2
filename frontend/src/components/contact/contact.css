@@ -27,6 +27,21 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.last-message-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.last-message-sender {
+    font-size: 14px;
+    color: #888;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
   
 .last-message {
     font-size: 14px;
