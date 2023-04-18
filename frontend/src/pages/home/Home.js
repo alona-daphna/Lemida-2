@@ -43,7 +43,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="container">
+        <div className={showChatForm ? "" : "container"}>
             {showChatForm ? <ChatForm setShowChatForm={setShowChatForm} /> :
                 isSmallScreen ? (
                     showConversations ? (
