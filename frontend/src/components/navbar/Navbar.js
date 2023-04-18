@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <div className='navbar-container'>
-      <h3>Lemida</h3>
+      <h3 onClick={() => {window.location.href = '/'}}>Lemida</h3>
       <div className="navbar-right">
         <div>Dark/Light</div>
         {user &&
