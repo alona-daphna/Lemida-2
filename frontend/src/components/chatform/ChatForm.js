@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { formatChat } from '../../utils/formatChat';
 import { ChatContext } from '../../context/chatListContext';
 import { IoArrowBack } from 'react-icons/io5';
+import { MdDeleteForever } from 'react-icons/md';
 
 const ChatForm = ({ setShowChatForm }) => {
     const { dispatch: setChatList } = useContext(ChatContext)
@@ -61,9 +62,9 @@ const ChatForm = ({ setShowChatForm }) => {
         <div className="chat-form-container">
             <div className='inner-container'>
                 <button className="back-button" onClick={() => setShowChatForm(false)}><IoArrowBack /></button>
-                <h2 className="create-chat middle">Create New Chat</h2>
+                <h2 className="create-chat middle">Create A New Chat</h2>
                 <form className='new-chat-form' onSubmit={handleSubmit}>
-                    <input type="text" placeholder='chat name' onChange={(e) => setName(e.target.value)} />
+                    <input type="text" placeholder='Enter chat name' onChange={(e) => setName(e.target.value)} />
 
                     <div className="add-participants">
                         <label>Add participants</label>
@@ -77,7 +78,7 @@ const ChatForm = ({ setShowChatForm }) => {
                         {members.map((member, index) => (
                             <div className="participant">
                                 <p classname="name" key={index}>{member}</p>
-                                <div className='x' onClick={() => setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index))}>x</div>
+                                <div className='x' onClick={() => setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index))}><MdDeleteForever className='delete-icon'/></div>
                             </div>
                         ))}
                     </div>}
