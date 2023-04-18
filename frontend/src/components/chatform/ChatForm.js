@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react'
+import './chatform.css';
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { formatChat } from '../../utils/formatChat';
 import { ChatContext } from '../../context/chatListContext';
+import { IoArrowBack } from 'react-icons/io5';
 
 const ChatForm = ({ setShowChatForm }) => {
     const { dispatch: setChatList } = useContext(ChatContext)
@@ -9,9 +11,17 @@ const ChatForm = ({ setShowChatForm }) => {
     const [members, setMembers] = useState([])
     const [memberToAdd, setMemberToAdd] = useState('')
     const [error, setError] = useState('')
+    const participantsRef = useRef(null);
 
-    const handleSubmit = async (e) => {  
-        e.preventDefault()          
+
+    useEffect(() => {
+        if (participantsRef.current) {
+            participantsRef.current.scrollTop = participantsRef.current.scrollHeight;
+        }
+    }, [members])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         const response = await fetch('http://localhost:4000/api/chats', {
             method: 'POST',
             body: JSON.stringify({
@@ -32,6 +42,8 @@ const ChatForm = ({ setShowChatForm }) => {
                 type: 'ADD_CHAT',
                 payload: json
             })
+            // navigate to home
+            setShowChatForm(false)
         } else {
             setError(json.error)
         }
@@ -39,29 +51,43 @@ const ChatForm = ({ setShowChatForm }) => {
 
     const handleAddParticipant = (e) => {
         e.preventDefault()
-        setMembers((prevMembers) => [...prevMembers, memberToAdd])
+        if (memberToAdd) {
+            setMembers((prevMembers) => [...prevMembers, memberToAdd])
+            setMemberToAdd('')
+        }
     }
 
-  return (
-    <div className="chat-form-container">
-        <button className="back-button" onClick={() => setShowChatForm(false)}>back</button>
-        <form onSubmit={handleSubmit}>
-            <input type="text" placeholder='chat name' onChange={(e) => setName(e.target.value)}/>
-            <div className="add-participants">
-                <label>Add participants</label>
-                <input type="text" placeholder='Enter a username' onChange={(e) => setMemberToAdd(e.target.value)}/>
-                <button className="add-participant" onClick={handleAddParticipant}>Add</button>
+    return (
+        <div className="chat-form-container">
+            <div className='inner-container'>
+                <button className="back-button" onClick={() => setShowChatForm(false)}><IoArrowBack /></button>
+                <h2 className="create-chat middle">Create New Chat</h2>
+                <form className='new-chat-form' onSubmit={handleSubmit}>
+                    <input type="text" placeholder='chat name' onChange={(e) => setName(e.target.value)} />
+
+                    <div className="add-participants">
+                        <label>Add participants</label>
+                        <div className="input-and-button">
+                            <input type="text" placeholder='Enter a username' value={memberToAdd} onChange={(e) => setMemberToAdd(e.target.value)} />
+                            <button className="add-participant" onClick={handleAddParticipant}>Add</button>
+                        </div>
+                    </div>
+
+                    {members.length > 0 && <div className="show-participants" ref={participantsRef}>
+                        {members.map((member, index) => (
+                            <div className="participant">
+                                <p classname="name" key={index}>{member}</p>
+                                <div className='x' onClick={() => setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index))}>x</div>
+                            </div>
+                        ))}
+                    </div>}
+
+                    <button className="submit">Create new chat</button>
+                </form>
+                {error && <div className='error middle'>{error}</div>}
             </div>
-            {members && <div className="show-participants">
-                {members.map((member, index) => (
-                    <div key={index}>{member}</div>
-                ))}
-            </div>}
-            <button className="submit">Create new chat</button>
-        </form>
-        {error && <div className='error'>{error}</div>}
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ChatForm

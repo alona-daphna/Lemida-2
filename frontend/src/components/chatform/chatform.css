@@ -1,0 +1,133 @@
+.chat-form-container {
+    width: 70%;
+    margin: 0 auto;
+    height: calc(100vh - 150px);
+    padding: 20px 0;
+
+}
+
+.inner-container {
+    background: #222;
+    height: 100%;
+}
+
+.back-button {
+    cursor: pointer;
+    background: inherit;
+    padding: 10px;
+    font-size: 150%;
+}
+
+.new-chat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    max-width: 400px;
+    width: 70%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.new-chat-form input {
+    padding-left: 20px;
+    background: var(--dark-gray-1);
+    border-radius: 10px;
+    color: var(--primary-color);
+}
+
+.new-chat-form * {
+    height:  45px;
+}
+
+button {
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.new-chat-form .submit{
+    border-radius: 25px;
+    width: 60%;
+    align-self: center;
+    margin-top: -25px;
+}
+
+.new-chat-form .submit:hover {
+    background: var(--color-purple-light);
+}
+
+.middle {
+    text-align: center;
+}
+
+.input-and-button {
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+
+.input-and-button button {
+    border-radius: 10px;
+    margin-left: -60px;
+}
+
+.add-participants {
+    position: relative;
+  }
+  
+  .add-participants label {
+    position: absolute;
+    top: -30px;
+    font-size: 0.9rem;
+    opacity: 80%;
+    padding-left: 10px;
+  }
+
+
+.show-participants {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content:center;
+    height: auto;
+    max-height: 120px ;
+    overflow-y: auto;
+    margin-top: -30px;
+
+}
+ .participant {
+    display: flex;
+    gap: 10px;
+    background: #333;
+    padding: 5px 10px;
+    width: fit-content;
+    height: fit-content;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+ }
+
+ .participant p {
+    height: fit-content;
+    color: var(--primary-color);
+ }
+
+ .x {
+    cursor: pointer;
+    height: fit-content;
+    color: var(--primary-color);
+    font-weight: 600;
+ }
+
+ .error {
+    font-size: 0.7rem;
+    color: var(--color-error);
+    width: fit-content;
+    margin: auto;
+    display: block;
+    border: 2px solid var(--color-error);
+    padding: 5px 10px;
+    margin-top: 12px;
+    border-radius: 5px;
+    background-color: rgba(250, 163, 250, .1);
+    font-weight: 400;
+
+
+ }
