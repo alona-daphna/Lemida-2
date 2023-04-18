@@ -29,7 +29,10 @@
 }
 
 .new-chat-form input {
-    padding-left: 10px;
+    padding-left: 20px;
+    background: var(--dark-gray-1);
+    border-radius: 10px;
+    color: var(--primary-color);
 }
 
 .new-chat-form * {
@@ -48,13 +51,22 @@ button {
     margin-top: -25px;
 }
 
+.new-chat-form .submit:hover {
+    background: var(--color-purple-light);
+}
+
 .middle {
     text-align: center;
 }
 
 .input-and-button {
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 90% 10%;
+}
+
+.input-and-button button {
+    border-radius: 10px;
+    margin-left: -60px;
 }
 
 .add-participants {
@@ -64,6 +76,9 @@ button {
   .add-participants label {
     position: absolute;
     top: -30px;
+    font-size: 0.9rem;
+    opacity: 80%;
+    padding-left: 10px;
   }
 
 
@@ -91,11 +106,14 @@ button {
 
  .participant p {
     height: fit-content;
+    color: var(--primary-color);
  }
 
  .x {
     cursor: pointer;
     height: fit-content;
+    color: var(--primary-color);
+    font-weight: 600;
  }
 
  .error {
