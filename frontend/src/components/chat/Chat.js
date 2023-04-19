@@ -151,12 +151,13 @@ const Chat = ({ onBackClick }) => {
                         {
                             showSearchForm ? 
                             <form className='search-chat-form' onSubmit={handleSearchSubmit}>
-                                    <input className='search-chat-input' type='text' placeholder='Search Messages' onChange={(e) => setSearchInput(e.target.value)}/>
-                                    <button className='search-chat-button'><CgSearch className='search-chat-button' /></button>
-                                    <button className='close-search-button' onClick={() => setShowSearchForm(false)}><CgClose /></button>
-                                </form>
+                                <input className='search-chat-input' type='text' placeholder='Search Messages' onChange={(e) => setSearchInput(e.target.value)}/>
+                                <button className='search-button'><CgSearch className='search-chat-button' /></button>
+                                <button className='search-button' onClick={() => setShowSearchForm(false)}><CgClose /></button>
+                            </form>
                             :
-                            <CgSearch className='reveal-search-button' onClick={() => setShowSearchForm(true)}/>
+                            <button className='search-button reveal' onClick={() => setShowSearchForm(true)}><CgSearch className='search-chat-button' /></button>
+                            // <CgSearch className='reveal-search-button' onClick={() => setShowSearchForm(true)}/>
                         }
 
                         <CgMoreVerticalAlt className='more-button' />
