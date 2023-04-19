@@ -30,7 +30,7 @@ const Navbar = () => {
       <h3 onClick={() => {window.location.href = '/'}}>Lemida</h3>
       <div className="navbar-right">
         <div>Dark/Light</div>
-        {user &&
+        {user && window.location.pathname !== '/register' && window.location.pathname !== '/login' &&
           <div className="logout">
             <button onClick={handleLogout}>Logout</button>
           </div>

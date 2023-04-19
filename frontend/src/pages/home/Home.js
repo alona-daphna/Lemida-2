@@ -27,22 +27,31 @@ const Home = () => {
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth <= 650);
         };
-
-        function handleEscPress(event) {
-            if (event.keyCode === 27) {
-                handleBackClick();
-                setChosenChat(null);
-            }
-        }
       
         handleResize();
-        document.addEventListener('keydown', handleEscPress);
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
-            document.removeEventListener('keydown', handleEscPress);
         };
     }, []);
+
+    useEffect(() => {
+        function handleEscPress(event) {
+            if (event.keyCode === 27) {
+                if (showChatForm == true) {
+                    setShowChatForm(false);
+                } else {
+                    handleBackClick();
+                    setChosenChat(null);
+                }
+            }
+        }
+      
+        document.addEventListener('keydown', handleEscPress);
+        return () => {
+            document.removeEventListener('keydown', handleEscPress);
+        };
+    }, [showChatForm]);
 
     return (
         <div className={showChatForm ? "" : "container"}>

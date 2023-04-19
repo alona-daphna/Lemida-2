@@ -57,7 +57,6 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                     idToUsername[member._id] = member.username;
                 });
 
-
                 const messagesWithUsername = chat.message_history.map(message => {
                     const { sender, text, createdAt } = message;
                     const username = idToUsername[sender];
@@ -121,7 +120,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: { id: chosenChat.id, message: msgToAdd, senderName: 'You' }
+                payload: { id: chosenChat.id, message: msgToAdd, senderName: user.username }
             })
         }
     }
@@ -166,11 +165,11 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                 :
                 <>
                     <div className="no-chosen-chat">
-                        <h className="welcome">Welcome</h>
-                        <h className="welcome-info">Send and receive messages in real time.</h>
+                        <div className="welcome">Welcome</div>
+                        <div className="welcome-info">Send and receive messages in real time.</div>
                         <div className="welcome-div">
                             <FiUnlock className="unlock"/>
-                            <h className="decrypted">End-to-end decrypted 😉</h>
+                            <div className="decrypted">End-to-end decrypted 😉</div>
                         </div>
                     </div>
                 </>
