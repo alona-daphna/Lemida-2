@@ -5,11 +5,13 @@ import Chat from '../../components/chat/Chat'
 import Conversations from '../../components/conversations/Conversations'
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import ChatForm from '../../components/chatform/ChatForm';
+import ChatInfo from '../../components/chatinfo/ChatInfo';
 
 const Home = () => {
 
     const [showConversations, setShowConversations] = useState(true);
     const [showChatForm, setShowChatForm] = useState(false)
+    const [showChatInfo, setShowChatInfo] = useState(false)
     const [isSmallScreen, setIsSmallScreen] = useState(window.matchMedia('(max-width: 650px)').matches);
     const { setChosenChat } = useContext(ChosenChatContext)
 
@@ -44,17 +46,17 @@ const Home = () => {
 
     return (
         <div className={showChatForm ? "" : "container"}>
-            {showChatForm ? <ChatForm setShowChatForm={setShowChatForm} /> :
+            {showChatForm ? <ChatForm setShowChatForm={setShowChatForm} /> : showChatInfo ? <ChatInfo setShowChatInfo={setShowChatInfo}/> :
                 isSmallScreen ? (
                     showConversations ? (
                         <Conversations onConversationClick={handleConversationClick} setShowChatForm={setShowChatForm} />
                     ) : (
-                        <Chat onBackClick={handleBackClick} />
+                        <Chat onBackClick={handleBackClick} setShowChatInfo={setShowChatInfo}/>
                     )
                 ) : (
                     <>
                         <Conversations onConversationClick={handleConversationClick} setShowChatForm={setShowChatForm} />
-                        <Chat />
+                        <Chat setShowChatInfo={setShowChatInfo}/>
                     </>
                 )
             }

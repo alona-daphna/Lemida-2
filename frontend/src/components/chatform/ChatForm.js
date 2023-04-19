@@ -76,7 +76,7 @@ const ChatForm = ({ setShowChatForm }) => {
                     {members.length > 0 && <div className="show-participants" ref={participantsRef}>
                         {members.map((member, index) => (
                             <div className="participant">
-                                <p classname="name" key={index}>{member}</p>
+                                <p className="name" key={index}>{member}</p>
                                 <div className='x' onClick={() => setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index))}>x</div>
                             </div>
                         ))}
