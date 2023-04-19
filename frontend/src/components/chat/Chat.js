@@ -1,7 +1,7 @@
 import Message from '../message/Message';
 import './chat.css'
 import { IoSend, IoArrowBack } from 'react-icons/io5';
-import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
+import { CgMoreVerticalAlt, CgSearch, CgClose } from 'react-icons/cg';
 import { FiUnlock } from 'react-icons/fi';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { ChosenChatContext } from '../../context/chosenChatContext';
@@ -13,12 +13,14 @@ const Chat = ({ onBackClick }) => {
     const { chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
-    const {chats: chats, dispatch: setChatList} = useContext(ChatContext)
+    const { chats: chats, dispatch: setChatList } = useContext(ChatContext)
 
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState(null)
     const [userAtBottom, setUserAtBottom] = useState(true)
     const [currentChat, setCurrentChat] = useState(null)
+    const [searchInput, setSearchInput] = useState('')
+    const [showSearchForm, setShowSearchForm] = useState(false)
 
     const messagesEndRef = useRef(null)
     const chatBodyRef = useRef(null)
@@ -126,6 +128,10 @@ const Chat = ({ onBackClick }) => {
         }
     }
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault()
+    }
+
     return (
         <div className="chat">
             {chosenChat ?
@@ -141,12 +147,23 @@ const Chat = ({ onBackClick }) => {
                         </div>
                         }
                         </div>
-                        <CgSearch className='search-chat-button' />
+                        
+                        {
+                            showSearchForm ? 
+                            <form className='search-chat-form' onSubmit={handleSearchSubmit}>
+                                    <input className='search-chat-input' type='text' placeholder='Search Messages' onChange={(e) => setSearchInput(e.target.value)}/>
+                                    <button className='search-chat-button'><CgSearch className='search-chat-button' /></button>
+                                    <button className='close-search-button' onClick={() => setShowSearchForm(false)}><CgClose /></button>
+                                </form>
+                            :
+                            <CgSearch className='reveal-search-button' onClick={() => setShowSearchForm(true)}/>
+                        }
+
                         <CgMoreVerticalAlt className='more-button' />
                     </div>
 
                     <div className="chat-body" ref={chatBodyRef}>
-                        {messages && messages.map((message, index) => (
+                        {messages && messages.filter((el) => el.text.toLowerCase().includes(searchInput.toLowerCase())).map((message, index) => (
                             <Message
                                 key={index}
                                 message={message.text}
