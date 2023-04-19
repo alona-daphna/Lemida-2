@@ -3,9 +3,11 @@ import './contact.css';
 import { CgProfile } from 'react-icons/cg';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { SocketContext } from '../../context/socketContext';
+import { UserContext } from '../../context/userContext';
 
 const Contact = ({ contact, onConversationClicked }) => {
 
+    const {user, setUser} = useContext(UserContext);
     const {setChosenChat} = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
     const {id, name, lastMsg, senderName, time, picture} = contact
@@ -30,7 +32,10 @@ const Contact = ({ contact, onConversationClicked }) => {
                     : <CgProfile className="profile-picture"/>}
                 <div className="info">
                     <div className="name">{name}</div>
-                    <div className="last-message">{senderName ? senderName + ':' : null} {lastMsg}</div>
+                    <div className='last-message-container'>
+                        <div className="last-message-sender">{senderName ? (user.username == senderName ? "You" : senderName) + ":" : ""}</div>
+                        <div className="last-message">{lastMsg}</div>
+                    </div>
                 </div>
                 <div className="time">{time}</div>
             </div>

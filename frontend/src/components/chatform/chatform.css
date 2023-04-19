@@ -14,7 +14,7 @@
 .back-button {
     cursor: pointer;
     background: inherit;
-    padding: 10px;
+    margin: 10px;
     font-size: 150%;
 }
 
@@ -71,16 +71,15 @@ button {
 
 .add-participants {
     position: relative;
-  }
-  
-  .add-participants label {
+}
+
+.add-participants label {
     position: absolute;
     top: -30px;
     font-size: 0.9rem;
     opacity: 80%;
     padding-left: 10px;
-  }
-
+}
 
 .show-participants {
     display: flex;
@@ -91,9 +90,9 @@ button {
     max-height: 120px ;
     overflow-y: auto;
     margin-top: -30px;
-
 }
- .participant {
+
+.participant {
     display: flex;
     gap: 10px;
     background: #333;
@@ -102,21 +101,32 @@ button {
     height: fit-content;
     font-size: 0.8rem;
     margin-bottom: 5px;
- }
+    overflow: hidden;
+    align-items: center;
+}
 
- .participant p {
+.participant p {
+    width: calc(100%);
     height: fit-content;
-    color: var(--primary-color);
- }
+    color: var(--color-purple-light);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
- .x {
+.x {
     cursor: pointer;
     height: fit-content;
     color: var(--primary-color);
     font-weight: 600;
- }
+    display: flex;
+}
 
- .error {
+.x .delete-icon {
+    height: 100%;
+}
+
+.error {
     font-size: 0.7rem;
     color: var(--color-error);
     width: fit-content;
@@ -128,6 +138,4 @@ button {
     border-radius: 5px;
     background-color: rgba(250, 163, 250, .1);
     font-weight: 400;
-
-
- }
+}
