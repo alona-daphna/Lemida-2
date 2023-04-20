@@ -184,12 +184,8 @@ const Chat = ({ onBackClick }) => {
                         {
                             showSearchForm ?
                             <>
-                            {
-                                <> 
-                                <button className='search-results-arrow up' onClick={() => handleDifferentMatch(-1)}><CgArrowUpO /></button>
-                                <button className='search-results-arrow down' onClick={() => handleDifferentMatch(1)}><CgArrowDownO /></button>
-                                </>
-                            }
+                            <button className='search-results-arrow up' onClick={() => handleDifferentMatch(-1)}><CgArrowUpO /></button>
+                            <button className='search-results-arrow down' onClick={() => handleDifferentMatch(1)}><CgArrowDownO /></button>
                             <form className='search-chat-form' onSubmit={handleSearchSubmit}>
                                 <input className='search-chat-input' type='text' placeholder='Search Messages' onChange={(e) => setSearchInput(e.target.value)}/>
                                 <button className='search-button'><CgSearch className='search-chat-button' /></button>
