@@ -129,10 +129,10 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         <div className="chat">
             {chosenChat ?
                 <>
-                    <div className="top-bar" onClick={() => setShowChatInfo(true)}>
+                    <div className="top-bar">
                         <button className='back' onClick={onBackClick}><IoArrowBack /></button>
-                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" />
-                        <div className='info'>
+                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" onClick={() => setShowChatInfo(true)}/>
+                        <div className='info' onClick={() => setShowChatInfo(true)}>
                         {currentChat && 
                         <div>
                             <p className='chat-name'>{currentChat.name}</p>

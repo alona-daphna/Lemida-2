@@ -1,0 +1,108 @@
+.chat-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+}
+
+.back-button {
+    margin-bottom: 0;
+}
+
+.add-member, .exit-chat {
+    padding: 10px 15px;
+    width: 30%;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.chat-info-content input {
+    background: var(--dark-gray-1);
+    border-radius: 10px;
+    color: var(--primary-color);
+    padding: 10px;
+}
+
+.add-participants-div {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.chat-info-content .show-participants {
+    margin-top: 20px;
+}
+
+.members {
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+.member {
+    background: var(--dark-gray-1);
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+
+.members-label {
+    margin: 10px auto -15px;
+    text-align: center;
+    opacity: 80%;
+    width: fit-content;
+}
+
+.inner-container {
+    overflow-y: auto;
+}
+
+.exit-chat {
+    margin-bottom: 20px;
+}
+
+.add-members-button {
+    margin-top: 10px;
+    margin-bottom: -5px;
+    font-size: 1.5rem;
+    padding: 7px 10px 0px 11px;
+    border-radius: 10px;
+    width: 43%
+}
+
+.add-members-button:hover, .exit-chat:hover, .add-member:hover {
+    background: var(--color-purple-light);
+}
+
+.you {
+    background: var(--dark-gray-3);
+}
+
+.chat-name-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto 0;
+    width: 90%;
+  }
+  
+.chat-name-form button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+
+}
+
+.toast-container .Toastify__toast {
+    background-color: var(--dark-gray-1);
+    text-align: center;
+}
+
+.custom-toast-progress-bar {
+    background: var(--primary-color) !important;
+  }

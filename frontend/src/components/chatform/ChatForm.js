@@ -58,7 +58,7 @@ const ChatForm = ({ setShowChatForm }) => {
     }
 
     return (
-        <div className="chat-form-container">
+        <div className="outer-container">
             <div className='inner-container'>
                 <button className="back-button" onClick={() => setShowChatForm(false)}><IoArrowBack /></button>
                 <h2 className="create-chat middle">Create A New Chat</h2>
@@ -75,8 +75,8 @@ const ChatForm = ({ setShowChatForm }) => {
 
                     {members.length > 0 && <div className="show-participants" ref={participantsRef}>
                         {members.map((member, index) => (
-                            <div className="participant">
-                                <p classname="name" key={index}>{member}</p>
+                            <div key={index} className="participant">
+                                <p className="name" key={index}>{member}</p>
                                 <div className='x' onClick={() => setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index))}><MdDeleteForever className='delete-icon'/></div>
                             </div>
                         ))}

@@ -19,6 +19,7 @@ export const formatChat = (chat) => {
         // To change to real images
         "picture": chat.name==="Ido" ? "https://shorturl.at/dfpzV" : "",
         "createdAt": chat.createdAt,
-        "lastMsgDate": date
+        "lastMsgDate": date,
+        "members": Object.values(idToUsername)
     };
 }

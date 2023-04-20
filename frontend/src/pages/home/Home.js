@@ -52,9 +52,10 @@ const Home = () => {
             document.removeEventListener('keydown', handleEscPress);
         };
     }, [showChatForm]);
+    console.log(showChatInfo)
 
     return (
-        <div className={showChatForm ? "" : "container"}>
+        <div className={showChatForm || showChatInfo ? "" : "container"}>
             {showChatForm ? <ChatForm setShowChatForm={setShowChatForm} /> : showChatInfo ? <ChatInfo setShowChatInfo={setShowChatInfo}/> :
                 isSmallScreen ? (
                     showConversations ? (

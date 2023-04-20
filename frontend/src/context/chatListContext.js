@@ -26,7 +26,7 @@ const chatReducer = (state, action) => {
             }
         case 'DELETE_CHAT':
             return {
-                chats: state.chats.filter(chat => chat.id !== action.payload.id )
+                chats: state.chats.filter(chat => chat.id !== action.payload.id)
             }
         case 'PUSH_TO_TOP':
             // receives a chat id
