@@ -91,6 +91,12 @@
     cursor: pointer; 
 }
 
+.search-results-arrow {
+    font-size: 1.3rem;
+    background-color: transparent;
+    padding: 0 2px;
+}
+
 .chat-body {
     border: 1px solid #fff;
     overflow-y: auto;
