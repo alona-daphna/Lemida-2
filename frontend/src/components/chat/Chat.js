@@ -211,16 +211,14 @@ const Chat = ({ onBackClick }) => {
 
                     <div className="chat-body" ref={chatBodyRef}>
                         {messages && messages.map((message, index) => (
-                            <div key={index} ref={(node) => messageRefs.current.set(index, node)}> 
                                 <Message
-                                    // key={index}
-                                    // ref={(node) => messageRefs.current.set(index, node)}
+                                    key={index}
+                                    ref={(node) => messageRefs.current.set(index, node)}
                                     message={message.text}
                                     isMine={message.sender === user._id}
                                     time={message.createdAt}
                                     username={message.username}
                                 />
-                            </div>
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
