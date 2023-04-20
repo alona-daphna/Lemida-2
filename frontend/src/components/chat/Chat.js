@@ -143,9 +143,6 @@ const Chat = ({ onBackClick }) => {
             .map(({ index }) => index)
 
         currentMatchRef.current = searchMatches.current.length - 1
-        // REMOVE
-        console.log('SEARCH MATCHES:', searchMatches.current)
-        console.log('CURRENT MATCH:', currentMatchRef.current)
     }
 
     const handleCloseSearch = () => {
@@ -164,13 +161,11 @@ const Chat = ({ onBackClick }) => {
         if (currentMatchRef.current == null) {
             return
         }
-        // console.log('PREV:', currentMatchRef.current)
         currentMatchRef.current = clampValue(
             currentMatchRef.current + value, 
             0, 
             searchMatches.current.length - 1
             )
-        console.log('CURRENT INDEX:', currentMatchRef.current)
         const messageToScrollTo = messageRefs.current.get( searchMatches.current[currentMatchRef.current] )
         messageToScrollTo.scrollIntoView({ behavior: 'smooth' })
     }
@@ -219,6 +214,7 @@ const Chat = ({ onBackClick }) => {
                             <div key={index} ref={(node) => messageRefs.current.set(index, node)}> 
                                 <Message
                                     // key={index}
+                                    // ref={(node) => messageRefs.current.set(index, node)}
                                     message={message.text}
                                     isMine={message.sender === user._id}
                                     time={message.createdAt}
