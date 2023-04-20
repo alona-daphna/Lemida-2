@@ -186,12 +186,21 @@ const deleteChat = async (req, res) => {
         return res.status(400).json({ message: 'Invalid chat ID.' });
     }
     try {
-        const chatId = req.params.id;
-        const chat = await Chat.findOneAndDelete({_id: chatId}).populate({
-            path: 'members',
-            select: '-password'
-        })
-        res.status(200).json(chat)
+        const chat  = await Chat.findOneAndUpdate(
+            {_id: req.params.id}, 
+            {$pull: {members: req.userId}},
+            {new: true}).populate({
+                path: 'members',
+                select: '-password'
+            })
+        
+        if (chat.members.length === 0) {
+            await Chat.findByIdAndDelete(req.userId)
+            return res.status(200).json('Chat deleted successfully')
+        }
+
+        return res.status(200).json(chat)
+
     } catch (error) {
         console.log(error)
         res.status(500).json({error: 'Failed to delete chat'})

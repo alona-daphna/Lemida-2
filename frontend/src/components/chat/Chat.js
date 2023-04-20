@@ -9,7 +9,7 @@ import { UserContext } from '../../context/userContext';
 import { SocketContext } from '../../context/socketContext';
 import { ChatContext } from "../../context/chatListContext";
 
-const Chat = ({ onBackClick }) => {
+const Chat = ({ onBackClick, setShowChatInfo }) => {
     const { chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
@@ -131,8 +131,8 @@ const Chat = ({ onBackClick }) => {
                 <>
                     <div className="top-bar">
                         <button className='back' onClick={onBackClick}><IoArrowBack /></button>
-                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" />
-                        <div className='info'>
+                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" onClick={() => setShowChatInfo(true)}/>
+                        <div className='info' onClick={() => setShowChatInfo(true)}>
                         {currentChat && 
                         <div>
                             <p className='chat-name'>{currentChat.name}</p>

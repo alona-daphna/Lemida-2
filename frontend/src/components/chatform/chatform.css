@@ -1,4 +1,4 @@
-.chat-form-container {
+.outer-container {
     width: 70%;
     margin: 0 auto;
     height: calc(100vh - 150px);

@@ -15,6 +15,7 @@
 .top-bar {
     justify-content: space-between;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .top-bar .profile-picture {
