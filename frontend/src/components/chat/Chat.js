@@ -8,6 +8,7 @@ import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
 import { SocketContext } from '../../context/socketContext';
 import { ChatContext } from "../../context/chatListContext";
+import { clampValue } from '../../utils/clampValue';
 
 const Chat = ({ onBackClick }) => {
     const { chosenChat } = useContext(ChosenChatContext)
@@ -21,7 +22,6 @@ const Chat = ({ onBackClick }) => {
     const [currentChat, setCurrentChat] = useState(null)
     const [searchInput, setSearchInput] = useState('')
     const [showSearchForm, setShowSearchForm] = useState(false)
-    // const [searchMatches, setSearchMatches] = useState([])
 
     const messagesEndRef = useRef(null)
     const chatBodyRef = useRef(null)
@@ -141,7 +141,6 @@ const Chat = ({ onBackClick }) => {
             .map((message, index) => { return { message, index } } )
             .filter((el) => el.message.text.toLowerCase().includes(searchInput.toLowerCase()))
             .map(({ index }) => index)
-
         currentMatchRef.current = searchMatches.current.length - 1
     }
 
@@ -150,11 +149,6 @@ const Chat = ({ onBackClick }) => {
         searchMatches.current = []
         setSearchInput('')
         currentMatchRef.current = null
-    }
-
-    // Move to utils
-    const clampValue = (value, min, max) => {
-        return Math.min(Math.max(value, min), max)  
     }
 
     const handleDifferentMatch = (value) => {
@@ -166,8 +160,9 @@ const Chat = ({ onBackClick }) => {
             0, 
             searchMatches.current.length - 1
             )
-        const messageToScrollTo = messageRefs.current.get( searchMatches.current[currentMatchRef.current] )
-        messageToScrollTo.scrollIntoView({ behavior: 'smooth' })
+        messageRefs.current.get( 
+            searchMatches.current[currentMatchRef.current] 
+            ).scrollIntoView({ behavior: 'smooth' })
     }
 
     return (
