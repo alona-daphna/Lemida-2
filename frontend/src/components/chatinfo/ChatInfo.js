@@ -7,24 +7,31 @@ import 'react-toastify/dist/ReactToastify.css';
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
-import { ChatContext } from '../../context/chatListContext';
-import { formatChat } from '../../utils/formatChat';
+import { SocketContext } from '../../context/socketContext';
 
 const ChatInfo = ({ setShowChatInfo }) => {
   const { chosenChat, setChosenChat } = useContext(ChosenChatContext)
   const { user } = useContext(UserContext)
+  const { socket } = useContext(SocketContext)
+  const [addParticipant, setAddParticipant] = useState(false)
   const [memberToAdd, setMemberToAdd] = useState('')
   const [members, setMembers] = useState([])
   const [name, setName] = useState(chosenChat.name)
   const [error, setError] = useState('')
-  const [nameError, setNameError] = useState('')
   const participantsRef = useRef(null);
   const containerBottomRef = useRef(null)
   const membersRef = useRef(null)
 
-  // TODO: use sockets to exit chat real time
+  useEffect(() => {
+    socket.on('other-member-exit', (data) => {
+      const { member } = data
+      setChosenChat({...chosenChat, members: chosenChat.members.filter(m => m != member.username)})
+    })
 
-  const [addParticipant, setAddParticipant] = useState(false)
+    return () => {
+      socket.off('other-member-exit')
+    }
+  }, [])
 
   useEffect(() => {
     if (participantsRef.current) {
@@ -56,19 +63,15 @@ const ChatInfo = ({ setShowChatInfo }) => {
         credentials: 'include'
       })
 
-      const json = await response.json()
-      console.log(json)
       if (response.ok) {
         toast("Name updated successfully", {
           progressClassName: 'custom-toast-progress-bar'
         })
-        setChosenChat({...chosenChat, name: name})
-      } else {
-        setNameError(json.error)
+        setChosenChat({ ...chosenChat, name: name })
       }
 
-    } 
-  } 
+    }
+  }
 
   const handleExitChat = async () => {
     const response = await fetch(`http://localhost:4000/api/chats/${chosenChat.id}`, {
@@ -79,6 +82,12 @@ const ChatInfo = ({ setShowChatInfo }) => {
     console.log(json)
 
     if (response.ok) {
+      console.log(user)
+      socket.emit('member-exit', {
+        room: chosenChat.id,
+        member: user
+      })
+
       setChosenChat(null)
       // navigate back to home
       setShowChatInfo(false)
@@ -139,7 +148,7 @@ const ChatInfo = ({ setShowChatInfo }) => {
         <h2 className='middle'>Chat Info</h2>
         <div className="chat-info-content">
           <form className="chat-name-form" onSubmit={handleChangeName}>
-            <input autoFocus className='chat-name' value={name} onChange={(e) => setName(e.target.value)}/>
+            <input autoFocus className='chat-name' value={name} onChange={(e) => setName(e.target.value)} />
             <button onClick={handleChangeName}>change</button>
           </form>
           <p className="members-label">{chosenChat.members.length} participants</p>
@@ -182,7 +191,7 @@ const ChatInfo = ({ setShowChatInfo }) => {
           <button className="exit-chat" onClick={handleExitChat}>Exit chat</button>
         </div>
       </div>
-      <ToastContainer className="toast-container"/>
+      <ToastContainer className="toast-container" />
 
     </div>
   )

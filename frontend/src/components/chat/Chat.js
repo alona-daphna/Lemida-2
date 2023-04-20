@@ -10,7 +10,7 @@ import { SocketContext } from '../../context/socketContext';
 import { ChatContext } from "../../context/chatListContext";
 
 const Chat = ({ onBackClick, setShowChatInfo }) => {
-    const { chosenChat } = useContext(ChosenChatContext)
+    const { setChosenChat, chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
     const {chats: chats, dispatch: setChatList} = useContext(ChatContext)
@@ -85,8 +85,14 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
         })
 
+        socket.on('other-member-exit', (data) => {
+            const {room, member} = data
+            setChosenChat({...chosenChat, members: chosenChat.members.filter(m => m != member.username)})
+        })
+
         return () => {
             socket.off('new-message');
+            socket.off('other-member-exit')
         }
     }, [])
 

@@ -46,6 +46,11 @@ io.on('connection', (socket) => {
         // send message object to all chat members but sender
         socket.broadcast.to(room).emit('new-message', {message: message, room: room})
     })
+
+    socket.on('member-exit', (data) => {
+        const { room, member } = data;
+        socket.broadcast.to(room).emit('other-member-exit', {room: room, member: member})
+    })
 })
 
 // routes
