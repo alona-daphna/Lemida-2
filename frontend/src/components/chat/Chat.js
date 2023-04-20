@@ -74,6 +74,7 @@ const Chat = ({ onBackClick }) => {
             }
         }
 
+        handleCloseSearch()
         fetchMessages()
     }, [chosenChat])
 
