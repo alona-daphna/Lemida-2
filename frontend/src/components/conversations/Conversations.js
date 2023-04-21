@@ -4,11 +4,15 @@ import { BiSearch } from 'react-icons/bi';
 import { useContext, useEffect, useState } from 'react';
 import { ChatContext } from "../../context/chatListContext";
 import { formatChat } from '../../utils/formatChat';
+import { SocketContext } from "../../context/socketContext";
+import { UserContext } from "../../context/userContext";
 
 const Conversations = ({ onConversationClick, setShowChatForm }) => {
     const [searchInput, setSearchInput] = useState('')
 
     const { chats, dispatch: setChatList } = useContext(ChatContext)
+    const { socket } = useContext(SocketContext)
+    const { user } = useContext(UserContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,12 +25,27 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
     }
 
     useEffect(() => {
-        const fetchConversations = async() => {
+        if (socket) {
+            socket.on('member-join', (data) => {
+                const { chat, members, who } = data
+                if (members.includes(user.username)) {
+                    setChatList({
+                        type: 'ADD_CHAT',
+                        payload: chat
+                    })
+                    console.log(`${who === user.username ? 'You' : who} added you`)
+                } else {
+                    console.log(`${who === user.username ? 'You' : who} added ${members}`)
+                }
+            })
+        }
+
+        const fetchConversations = async () => {
             const response = await fetch("http://localhost:4000/api/chats", {
                 credentials: 'include'
             })
             const chatsJson = await response.json()
-            const chatsFiltered = chatsJson.map(chat => {return formatChat(chat)});
+            const chatsFiltered = chatsJson.map(chat => { return formatChat(chat) });
             setChatList({
                 type: 'SET_CHATS',
                 payload: chatsFiltered
@@ -34,19 +53,24 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
         }
 
         fetchConversations();
+        return () => {
+            if (socket) {
+                socket.off('member-join')
+            }
+        }
     }, [])
 
-    return ( 
+    return (
         <div className="conversations" >
             <form className="search-form" onSubmit={handleSubmit}>
-                <input className="search-input" type="text" placeholder='Search' onChange={(e) => setSearchInput(e.target.value)}/>
+                <input className="search-input" type="text" placeholder='Search' onChange={(e) => setSearchInput(e.target.value)} />
                 <button className="search-button"><BiSearch /></button>
             </form>
             <div className="chats">
-                {chats && 
-                    chats.filter(function (el) {return el.name.toLowerCase().includes(searchInput.toLowerCase())}).map((contact, index) => (
-                        <Contact 
-                            key={index} 
+                {chats &&
+                    chats.filter(function (el) { return el.name.toLowerCase().includes(searchInput.toLowerCase()) }).map((contact, index) => (
+                        <Contact
+                            key={index}
                             contact={contact}
                             onConversationClicked={onConversationClick}
                         />
@@ -59,7 +83,7 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
                 </button>
             </div>
         </div>
-     );
+    );
 }
- 
+
 export default Conversations;

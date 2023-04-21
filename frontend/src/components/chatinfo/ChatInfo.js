@@ -25,11 +25,17 @@ const ChatInfo = ({ setShowChatInfo }) => {
   useEffect(() => {
     socket.on('other-member-exit', (data) => {
       const { member } = data
-      setChosenChat({...chosenChat, members: chosenChat.members.filter(m => m != member.username)})
+      setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
+    })
+
+    socket.on('other-member-join', (data) => {
+      const { members } = data
+      setChosenChat({ ...chosenChat, members: [...chosenChat.members, ...members] })
     })
 
     return () => {
       socket.off('other-member-exit')
+      socket.off('other-member-join')
     }
   }, [])
 
@@ -79,10 +85,8 @@ const ChatInfo = ({ setShowChatInfo }) => {
       credentials: 'include'
     })
     const json = await response.json()
-    console.log(json)
 
     if (response.ok) {
-      console.log(user)
       socket.emit('member-exit', {
         room: chosenChat.id,
         member: user
@@ -117,6 +121,16 @@ const ChatInfo = ({ setShowChatInfo }) => {
         const updatedChosenChat = { ...chosenChat, members: [...chosenChat.members, ...newMembers] };
         toast("Participants added successfully", {
           progressClassName: 'custom-toast-progress-bar'
+        })
+        // current user is adding new members to the room, how do i do that with sockets?
+        socket.emit('other-join-room', {
+          chat: chosenChat,
+          members: newMembers,
+          who: user.username
+        })
+        socket.emit('member-join', {
+          chat: chosenChat,
+          members: newMembers
         })
         setChosenChat(updatedChosenChat)
         setMembers([])

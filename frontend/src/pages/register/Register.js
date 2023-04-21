@@ -13,7 +13,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Username: ${username}, Password: ${password}`)
 
     const response = await fetch('http://localhost:4000/api/auth/register', {
       method: 'POST',
@@ -25,7 +24,6 @@ const Register = () => {
     })
 
     const json = await response.json()
-    console.log(json)
 
     if (response.ok) {
       const response2 = await fetch('http://localhost:4000/api/auth/login', {

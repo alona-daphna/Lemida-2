@@ -52,7 +52,6 @@ const Home = () => {
             document.removeEventListener('keydown', handleEscPress);
         };
     }, [showChatForm]);
-    console.log(showChatInfo)
 
     return (
         <div className={showChatForm || showChatInfo ? "" : "container"}>

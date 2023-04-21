@@ -35,7 +35,6 @@ const ChatForm = ({ setShowChatForm }) => {
         })
 
         let json = await response.json()
-        console.log(json)
         if (response.ok) {
             json = formatChat(json)
             setChatList({

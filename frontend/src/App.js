@@ -16,14 +16,30 @@ import { SocketContext } from './context/socketContext';
 import NotFound from './pages/notfound/NotFound';
 
 function App() {
-  const {user, setUser} = useContext(UserContext);
-  const {setSocket} = useContext(SocketContext)
-  const [loading, setLoading] = useState(true)
+  const { user, setUser } = useContext(UserContext);
+  const { setSocket } = useContext(SocketContext)
+  const [userLoading, setUserLoading] = useState(true)
 
   useEffect(() => {
-    const newSocket = io('http://localhost:4000')
-    setSocket(newSocket)
+    let newSocket;
+    if (user) {
+      newSocket = io('http://localhost:4000', {
+        query: { username: user.username }
+      })
 
+      newSocket.on('connect', () => {
+        setSocket(newSocket)
+        console.log('connected to socket')
+      })
+    }
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect()
+      }
+    }
+  }, [user])
+
+  useEffect(() => {
     const fetchUser = async () => {
       const token = Cookies.get('jwt')
       if (token) {
@@ -32,16 +48,11 @@ function App() {
         const response = await fetch(`http://localhost:4000/api/users/${userId}`)
         const json = await response.json()
         setUser(json)
-      }  
-      setLoading(false)
+      }
+      setUserLoading(false)
     }
 
     fetchUser()
-
-    // clean up socket when component unmounts
-    return () => {
-      newSocket.disconnect()
-    }
   }, [])
 
   return (
@@ -49,10 +60,10 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path='/' element={loading ? <></> : (user ? <Home /> : <Register />)}/>
+        <Route path='/' element={userLoading ? <></> : (user ? <Home /> : <Register />)} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='*' element={<NotFound/>}/>
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

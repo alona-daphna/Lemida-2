@@ -13,7 +13,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
     const { setChosenChat, chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
-    const {chats: chats, dispatch: setChatList} = useContext(ChatContext)
+    const { chats: chats, dispatch: setChatList } = useContext(ChatContext)
 
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState(null)
@@ -86,8 +86,10 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         })
 
         socket.on('other-member-exit', (data) => {
-            const {room, member} = data
-            setChosenChat({...chosenChat, members: chosenChat.members.filter(m => m != member.username)})
+            const { room, member } = data
+            if (chosenChat) {
+                setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
+            }
         })
 
         return () => {
@@ -118,7 +120,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
             setMessages([...messages, msgToAdd])
 
             socket.emit('send-message', {
-                room: chosenChat.id, 
+                room: chosenChat.id,
                 message: msgToAdd
             })
 
@@ -137,14 +139,14 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                 <>
                     <div className="top-bar">
                         <button className='back' onClick={onBackClick}><IoArrowBack /></button>
-                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" onClick={() => setShowChatInfo(true)}/>
+                        <img className='profile-picture' src="https://shorturl.at/dfpzV" alt="ProfilePic" onClick={() => setShowChatInfo(true)} />
                         <div className='info' onClick={() => setShowChatInfo(true)}>
-                        {currentChat && 
-                        <div>
-                            <p className='chat-name'>{currentChat.name}</p>
-                            <p className='chat-info'>Tap here for group info</p>
-                        </div>
-                        }
+                            {currentChat &&
+                                <div>
+                                    <p className='chat-name'>{currentChat.name}</p>
+                                    <p className='chat-info'>Tap here for group info</p>
+                                </div>
+                            }
                         </div>
                         <CgSearch className='search-chat-button' />
                         <CgMoreVerticalAlt className='more-button' />
@@ -174,7 +176,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                         <div className="welcome">Welcome</div>
                         <div className="welcome-info">Send and receive messages in real time.</div>
                         <div className="welcome-div">
-                            <FiUnlock className="unlock"/>
+                            <FiUnlock className="unlock" />
                             <div className="decrypted">End-to-end decrypted 😉</div>
                         </div>
                     </div>

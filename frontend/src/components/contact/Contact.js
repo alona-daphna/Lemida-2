@@ -7,7 +7,7 @@ import { UserContext } from '../../context/userContext';
 
 const Contact = ({ contact, onConversationClicked }) => {
 
-    const {user, setUser} = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const {setChosenChat} = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
     const {id, name, lastMsg, senderName, time, picture} = contact
