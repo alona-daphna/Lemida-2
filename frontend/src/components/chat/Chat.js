@@ -1,27 +1,33 @@
 import Message from '../message/Message';
 import './chat.css'
 import { IoSend, IoArrowBack } from 'react-icons/io5';
-import { CgMoreVerticalAlt, CgSearch } from 'react-icons/cg';
+import { CgMoreVerticalAlt, CgSearch, CgClose, CgArrowDownO, CgArrowUpO } from 'react-icons/cg';
 import { FiUnlock } from 'react-icons/fi';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { ChosenChatContext } from '../../context/chosenChatContext';
 import { UserContext } from '../../context/userContext';
 import { SocketContext } from '../../context/socketContext';
 import { ChatContext } from "../../context/chatListContext";
+import { clampValue } from '../../utils/clampValue';
 
 const Chat = ({ onBackClick, setShowChatInfo }) => {
     const { chosenChat } = useContext(ChosenChatContext)
     const { user } = useContext(UserContext)
     const { socket } = useContext(SocketContext)
-    const {chats: chats, dispatch: setChatList} = useContext(ChatContext)
+    const { chats: chats, dispatch: setChatList } = useContext(ChatContext)
 
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState(null)
     const [userAtBottom, setUserAtBottom] = useState(true)
     const [currentChat, setCurrentChat] = useState(null)
+    const [searchInput, setSearchInput] = useState('')
+    const [showSearchForm, setShowSearchForm] = useState(false)
 
     const messagesEndRef = useRef(null)
     const chatBodyRef = useRef(null)
+    const messageRefs = useRef(new Map())
+    const searchMatches = useRef([])
+    const currentMatchRef = useRef(null)
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -67,6 +73,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
             }
         }
 
+        handleCloseSearch()
         fetchMessages()
     }, [chosenChat])
 
@@ -125,6 +132,42 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         }
     }
 
+    const handleSearchSubmit = (e) => {
+        e?.preventDefault()
+        if (searchInput.length === 0) {
+            console.log('LENGTH IS 0')
+            return
+        }
+        searchMatches.current = messages
+            .map((message, index) => { return { message, index } } )
+            .filter((el) => el.message.text.toLowerCase().includes(searchInput.toLowerCase()))
+            .map(({ index }) => index)
+        currentMatchRef.current = searchMatches.current.length - 1
+    }
+
+    useEffect(handleSearchSubmit, [searchInput, messages])
+
+    const handleCloseSearch = () => {
+        setShowSearchForm(false)
+        searchMatches.current = []
+        setSearchInput('')
+        currentMatchRef.current = null
+    }
+
+    const handleDifferentMatch = (value) => {
+        if (currentMatchRef.current == null) {
+            return
+        }
+        currentMatchRef.current = clampValue(
+            currentMatchRef.current + value, 
+            0, 
+            searchMatches.current.length - 1
+            )
+        messageRefs.current.get( 
+            searchMatches.current[currentMatchRef.current] 
+            )?.scrollIntoView({ behavior: 'smooth' })
+    }
+
     return (
         <div className="chat">
             {chosenChat ?
@@ -140,19 +183,36 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                         </div>
                         }
                         </div>
-                        <CgSearch className='search-chat-button' />
+                        
+                        {
+                            showSearchForm ?
+                            <>
+                            <button className='search-results-arrow up' onClick={() => handleDifferentMatch(-1)}><CgArrowUpO /></button>
+                            <button className='search-results-arrow down' onClick={() => handleDifferentMatch(1)}><CgArrowDownO /></button>
+                            <form className='search-chat-form' onSubmit={handleSearchSubmit}>
+                                <input className='search-chat-input' type='text' placeholder='Search Messages' onChange={(e) => setSearchInput(e.target.value)}/>
+                                <button className='search-button'><CgSearch className='search-chat-button' /></button>
+                                <button className='search-button close' onClick={handleCloseSearch}><CgClose /></button>
+                            </form>
+                            </>
+                            :
+                            <button className='search-button reveal' onClick={() => setShowSearchForm(true)}><CgSearch className='search-chat-button' /></button>
+                            // <CgSearch className='reveal-search-button' onClick={() => setShowSearchForm(true)}/>
+                        }
+
                         <CgMoreVerticalAlt className='more-button' />
                     </div>
 
                     <div className="chat-body" ref={chatBodyRef}>
                         {messages && messages.map((message, index) => (
-                            <Message
-                                key={index}
-                                message={message.text}
-                                isMine={message.sender === user._id}
-                                time={message.createdAt}
-                                username={message.username}
-                            />
+                                <Message
+                                    key={index}
+                                    ref={(node) => messageRefs.current.set(index, node)}
+                                    message={message.text}
+                                    isMine={message.sender === user._id}
+                                    time={message.createdAt}
+                                    username={message.username}
+                                />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
