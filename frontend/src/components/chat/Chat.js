@@ -163,7 +163,7 @@ const Chat = ({ onBackClick }) => {
             )
         messageRefs.current.get( 
             searchMatches.current[currentMatchRef.current] 
-            ).scrollIntoView({ behavior: 'smooth' })
+            )?.scrollIntoView({ behavior: 'smooth' })
     }
 
     return (
