@@ -1,0 +1,14 @@
+.contact-menu {
+    width: 100px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: rgb(58, 58, 58);
+}
+  
+.option {
+    padding: 8px;
+    cursor: pointer;
+}
+  
+.option:hover {
+    background-color: rgb(99, 99, 99);
+}
