@@ -134,8 +134,9 @@ const Chat = ({ onBackClick }) => {
     }
 
     const handleSearchSubmit = (e) => {
-        e.preventDefault()
+        e?.preventDefault()
         if (searchInput.length === 0) {
+            console.log('LENGTH IS 0')
             return
         }
         searchMatches.current = messages
@@ -144,6 +145,8 @@ const Chat = ({ onBackClick }) => {
             .map(({ index }) => index)
         currentMatchRef.current = searchMatches.current.length - 1
     }
+
+    useEffect(handleSearchSubmit, [searchInput, messages])
 
     const handleCloseSearch = () => {
         setShowSearchForm(false)
