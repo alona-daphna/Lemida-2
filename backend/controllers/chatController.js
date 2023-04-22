@@ -40,7 +40,7 @@ const getUserChats = async (req, res) => {
         const userId = req.userId;
         console.log("user ID:", userId)
         // find all chats where the members array contains the user id
-        const chats = await Chat.find({ members: userId }).populate({
+        const chats = await Chat.find({ members: { $elemMatch: { memberId: userId } } }).populate({
             path: 'members',
             select: '-password'
         })
@@ -76,11 +76,11 @@ const createChat = async (req, res) => {
     )
 
     // convert usernames to ids
-    const memberIds = memberObjs.map(member => member._id)
-    console.log(memberIds)
-
+    const memberIds = memberObjs.map(member => {
+        return { memberId: member._id, pinned: false };
+    });
+    console.log(memberIds);
     
-
     try {
         const chat = await Chat.create({ name, members: memberIds });
         const populatedChat = await Chat.findById(chat._id).populate({

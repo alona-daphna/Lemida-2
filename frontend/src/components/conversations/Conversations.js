@@ -26,6 +26,7 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
                 credentials: 'include'
             })
             const chatsJson = await response.json()
+            console.log(chatsJson)
             const chatsFiltered = chatsJson.map(chat => {return formatChat(chat)});
             setChatList({
                 type: 'SET_CHATS',

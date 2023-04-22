@@ -8,9 +8,14 @@ const chatSchema = new Schema({
         required: true
     },
     members: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        memberId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        }, pinned: {
+            type: Boolean,
+            required: true
+        }
     }],
     message_history: [{
         text: {
