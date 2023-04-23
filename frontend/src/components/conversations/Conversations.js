@@ -45,6 +45,15 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
                     payload: chat
                 })
             })
+
+            socket.on('other-member-exit', (data) => {
+                const { room, member } = data;
+                const chat = chats.filter((c) => c.id === room)[0]
+                setChatList({
+                    type: 'UPDATE_CHAT',
+                    payload: {...chat, members: chat.members.filter((m) => m !== member.username)}
+                })
+            })
         }
 
         const fetchConversations = async () => {
