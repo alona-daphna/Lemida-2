@@ -78,6 +78,14 @@ io.on('connection', (socket) => {
         const { room, member } = data;
         socket.broadcast.to(room).emit('other-member-exit', { room: room, member: member })
     })
+
+    socket.on('disconnect', () => {
+        const username = Object.keys(connectedUsers).find(key => connectedUsers[key] === socket.id)
+        if (username) {
+            delete connectedUsers[username];
+            console.log(connectedUsers)
+        }
+    })
 })
 
 // routes

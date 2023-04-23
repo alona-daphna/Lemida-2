@@ -71,30 +71,33 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
     }, [chosenChat])
 
     useEffect(() => {
-        socket.on('new-message', (data) => {
-            const { message, room } = data
+        if (socket) {
+            socket.on('new-message', (data) => {
+                const { message, room } = data
 
-            if (chosenChat && room === chosenChat.id) {
-                setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
-            }
-            // add chat to top of chatlist
-            setChatList({
-                type: 'PUSH_TO_TOP',
-                payload: { id: room, message: message, senderName: message.username }
+                if (chosenChat && room === chosenChat.id) {
+                    setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
+                }
+                // add chat to top of chatlist
+                setChatList({
+                    type: 'PUSH_TO_TOP',
+                    payload: { id: room, message: message, senderName: message.username }
+                })
+
             })
 
-        })
-
-        socket.on('other-member-exit', (data) => {
-            const { room, member } = data
-            if (chosenChat) {
-                setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
-            }
-        })
-
+            socket.on('other-member-exit', (data) => {
+                const { room, member } = data
+                if (chosenChat) {
+                    setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
+                }
+            })
+        }
         return () => {
-            socket.off('new-message');
-            socket.off('other-member-exit')
+            if (socket) {
+                socket.off('new-message');
+                socket.off('other-member-exit')
+            }
         }
     }, [])
 
