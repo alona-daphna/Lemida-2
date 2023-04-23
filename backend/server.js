@@ -74,6 +74,21 @@ io.on('connection', (socket) => {
         socket.broadcast.to(room).emit('new-message', { message: message, room: room })
     })
 
+    socket.on('new-chat', (data) => {
+        const {members, chat} = data
+        console.log(members)
+        socket.join(chat._id)
+        let socketId;
+        members.forEach((m) => {
+            socketId = connectedUsers[m]
+            if (socketId) {
+                diffSocket = io.sockets.sockets.get(socketId)
+                diffSocket.join(chat._id)
+            }
+        })
+        socket.broadcast.to(chat._id).emit('added-to-new-chat', chat)
+    })
+
     socket.on('member-exit', (data) => {
         const { room, member } = data;
         socket.broadcast.to(room).emit('other-member-exit', { room: room, member: member })

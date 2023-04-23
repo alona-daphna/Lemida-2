@@ -38,6 +38,13 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
                     console.log(`${who === user.username ? 'You' : who} added ${members}`)
                 }
             })
+
+            socket.on('added-to-new-chat', (chat) => {
+                setChatList({
+                    type: 'ADD_CHAT',
+                    payload: chat
+                })
+            })
         }
 
         const fetchConversations = async () => {
@@ -56,6 +63,7 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
         return () => {
             if (socket) {
                 socket.off('member-join')
+                socket.off('added-to-new-chat')
             }
         }
     }, [])

@@ -4,9 +4,11 @@ import { formatChat } from '../../utils/formatChat';
 import { ChatContext } from '../../context/chatListContext';
 import { IoArrowBack } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
+import { SocketContext } from '../../context/socketContext';
 
 const ChatForm = ({ setShowChatForm }) => {
     const { dispatch: setChatList } = useContext(ChatContext)
+    const {socket} = useContext(SocketContext)
 
     const [name, setName] = useState('')
     const [members, setMembers] = useState([])
@@ -41,6 +43,8 @@ const ChatForm = ({ setShowChatForm }) => {
                 type: 'ADD_CHAT',
                 payload: json
             })
+            // fire event chat is created
+            socket.emit('new-chat', {members: members, chat: json})
             // navigate to home
             setShowChatForm(false)
         } else {
