@@ -26,6 +26,17 @@ const chatSchema = new Schema({
             type: Date,
             required: true
         }
+    }],
+    unreadCount: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        count: {
+            type: Number,
+            default: 0    
+        },
     }]
 
 }, {timestamps: true})

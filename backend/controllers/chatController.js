@@ -7,15 +7,15 @@ const validateIds = async (ids, collection, object) => {
     // check that ids are valid mongoose object ids
     if (!ids.every(id => mongoose.Types.ObjectId.isValid(id))) {
         return { status: 400, error: `Invalid ${object} id(s)` };
-      }
+    }
 
     // check that all ids exist in the specified collection
     const memberObjs = await collection.find({ _id: { $in: ids } }, '_id');
     if (memberObjs.length !== ids.length) {
-      return { status: 400, error: `${object} id(s) do(es) not exist in collection` };
+        return { status: 400, error: `${object} id(s) do(es) not exist in collection` };
     }
 
-    return {status: 200};
+    return { status: 200 };
 }
 
 // get details for a single chat including participants and chat history
@@ -29,7 +29,7 @@ const getChat = async (req, res) => {
         });
         res.status(200).json(chat);
     } catch (error) {
-        res.status(400).json({error: error})
+        res.status(400).json({ error: error })
     }
 }
 
@@ -44,10 +44,20 @@ const getUserChats = async (req, res) => {
             path: 'members',
             select: '-password'
         })
-        return res.status(200).json(chats)
+
+        const chatsWithUnreadCount = chats.map(chat => {
+            const unreadCountObj = chat.unreadCount.find(obj => obj.user.toString() === userId.toString())
+            const count = unreadCountObj ? unreadCountObj.count : 0
+            return {
+                ...chat.toObject(),
+                unreadCount: count
+            }
+        })
+
+        return res.status(200).json(chatsWithUnreadCount)
     } catch (error) {
         console.log(error)
-        return res.status(500).json({error: 'Failed to retrieve chats'})
+        return res.status(500).json({ error: 'Failed to retrieve chats' })
     }
 }
 
@@ -57,10 +67,10 @@ const createChat = async (req, res) => {
     const user = await User.findById(req.userId)
 
     if (!name) {
-        return res.status(400).json({ error: 'Please provide a name for the chat'})
-    }  
+        return res.status(400).json({ error: 'Please provide a name for the chat' })
+    }
     if (!members || !Array.isArray(members) || members.length < 1 || (members.includes(user.username) && members.length == 1)) {
-        return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
+        return res.status(400).json({ error: 'Please provide at least 1 other chat participant' })
     }
 
     // add the user creating the chat to the members array
@@ -79,7 +89,7 @@ const createChat = async (req, res) => {
     const memberIds = memberObjs.map(member => member._id)
     console.log(memberIds)
 
-    
+
 
     try {
         const chat = await Chat.create({ name, members: memberIds });
@@ -90,13 +100,13 @@ const createChat = async (req, res) => {
         return res.status(201).json(populatedChat);
     } catch (error) {
         console.log(error)
-        return res.status(500).json({error: 'Failed to create chat'})
+        return res.status(500).json({ error: 'Failed to create chat' })
     }
 }
 
 // update chat name, list of participants
 const updateChat = async (req, res) => {
-    let {name, members} = req.body
+    let { name, members } = req.body
     const user = await User.findById(req.userId)
 
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -104,10 +114,10 @@ const updateChat = async (req, res) => {
     }
 
     if (!name) {
-        return res.status(400).json({error: 'Please provide a new chat name'})
+        return res.status(400).json({ error: 'Please provide a new chat name' })
     }
     if (!members || !Array.isArray(members) || members.length < 1 || (members.includes(user.username) && members.length == 1)) {
-        return res.status(400).json({error: 'Please provide at least 1 other chat participant'})
+        return res.status(400).json({ error: 'Please provide at least 1 other chat participant' })
     }
 
     // add current logged in user to members array
@@ -129,20 +139,20 @@ const updateChat = async (req, res) => {
 
     try {
         const chat = await Chat.findOneAndUpdate(
-            {_id: req.params.id},
-            {name, members: memberIds},
-            {new: true}
+            { _id: req.params.id },
+            { name, members: memberIds },
+            { new: true }
         ).populate({
             path: 'members',
             select: '-password'
         })
 
-        if (!chat) return res.status(400).json({error: 'Chat not found'})
-    
+        if (!chat) return res.status(400).json({ error: 'Chat not found' })
+
         return res.status(200).json(chat)
     } catch (error) {
         console.log(error)
-        return res.status(500).json({error: 'Failed to update chat'})
+        return res.status(500).json({ error: 'Failed to update chat' })
     }
 }
 
@@ -160,23 +170,23 @@ const createMessage = async (req, res) => {
         createdAt: new Date()
     };
 
-    if (!text) return res.status(400).json({error: 'Please provide message content'})
+    if (!text) return res.status(400).json({ error: 'Please provide message content' })
 
     try {
         const chat = await Chat.findOneAndUpdate(
-            {_id: req.params.id},
-            {$push: {message_history: newMessage}},
-            {new: true}
+            { _id: req.params.id },
+            { $push: { message_history: newMessage } },
+            { new: true }
         ).populate({
             path: 'members',
             select: '-password'
         });
-        if (!chat) return res.status(400).json({error: 'Chat not found'})
+        if (!chat) return res.status(400).json({ error: 'Chat not found' })
 
         return res.status(201).json(chat)
     } catch (error) {
         console.log(error)
-        return res.status(500).json({error: 'Failed to create message'})
+        return res.status(500).json({ error: 'Failed to create message' })
     }
 }
 
@@ -186,14 +196,14 @@ const deleteChat = async (req, res) => {
         return res.status(400).json({ message: 'Invalid chat ID.' });
     }
     try {
-        const chat  = await Chat.findOneAndUpdate(
-            {_id: req.params.id}, 
-            {$pull: {members: req.userId}},
-            {new: true}).populate({
+        const chat = await Chat.findOneAndUpdate(
+            { _id: req.params.id },
+            { $pull: { members: req.userId } },
+            { new: true }).populate({
                 path: 'members',
                 select: '-password'
             })
-        
+
         if (chat.members.length === 0) {
             await Chat.findByIdAndDelete(req.userId)
             return res.status(200).json('Chat deleted successfully')
@@ -203,7 +213,7 @@ const deleteChat = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: 'Failed to delete chat'})
+        res.status(500).json({ error: 'Failed to delete chat' })
     }
 }
 
