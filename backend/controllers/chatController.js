@@ -205,7 +205,7 @@ const deleteChat = async (req, res) => {
             })
 
         if (chat.members.length === 0) {
-            await Chat.findByIdAndDelete(req.userId)
+            await Chat.findByIdAndDelete(req.params.id)
             return res.status(200).json('Chat deleted successfully')
         }
 
