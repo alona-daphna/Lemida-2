@@ -26,20 +26,21 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
 
     useEffect(() => {
         if (socket) {
-            socket.on('member-join', (data) => {
+
+            socket.on('join-existing-chat', (data) => {
                 const { chat, members, who } = data
                 if (members.includes(user.username)) {
                     setChatList({
                         type: 'ADD_CHAT',
                         payload: chat
                     })
-                    console.log(`${who === user.username ? 'You' : who} added you`)
+                    console.log(`${who} added you and ${members.filter(m => m !== user.username)}`)
                 } else {
                     console.log(`${who === user.username ? 'You' : who} added ${members}`)
                 }
             })
 
-            socket.on('added-to-new-chat', (chat) => {
+            socket.on('join-new-chat', (chat) => {
                 setChatList({
                     type: 'ADD_CHAT',
                     payload: chat
@@ -48,10 +49,9 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
 
             socket.on('other-member-exit', (data) => {
                 const { room, member } = data;
-                const chat = chats.filter((c) => c.id === room)[0]
                 setChatList({
-                    type: 'UPDATE_CHAT',
-                    payload: {...chat, members: chat.members.filter((m) => m !== member.username)}
+                    type: 'REMOVE_MEMBER',
+                    payload: {chatId: room, memberToRemove: member}
                 })
             })
         }
@@ -71,11 +71,12 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
         fetchConversations();
         return () => {
             if (socket) {
-                socket.off('member-join')
-                socket.off('added-to-new-chat')
+                socket.off('join-existing-chat')
+                socket.off('join-new-chat')
+                socket.off('other-member-exit')
             }
         }
-    }, [])
+    }, [socket])
 
     return (
         <div className="conversations" >

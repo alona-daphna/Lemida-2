@@ -28,14 +28,14 @@ const ChatInfo = ({ setShowChatInfo }) => {
       setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
     })
 
-    socket.on('other-member-join', (data) => {
+    socket.on('join-existing-chat', (data) => {
       const { members } = data
       setChosenChat({ ...chosenChat, members: [...chosenChat.members, ...members] })
     })
 
     return () => {
       socket.off('other-member-exit')
-      socket.off('other-member-join')
+      socket.off('join-existing-chat')
     }
   }, [])
 

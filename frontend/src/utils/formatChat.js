@@ -10,6 +10,7 @@ export const formatChat = (chat) => {
     const date = lastMessage ? new Date(lastMessage.createdAt) : "";
     const hour = date ? date.getHours().toString().padStart(2, "0") : "";
     const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";
+
     return {
         "id": chat._id,
         "name": chat.name,
@@ -20,6 +21,7 @@ export const formatChat = (chat) => {
         "picture": chat.name==="Ido" ? "https://shorturl.at/dfpzV" : "",
         "createdAt": chat.createdAt,
         "lastMsgDate": date,
-        "members": Object.values(idToUsername)
+        "members": Object.values(idToUsername),
+        "unreadCount": chat.unreadCount
     };
 }

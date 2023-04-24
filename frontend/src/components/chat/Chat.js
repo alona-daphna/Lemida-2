@@ -72,13 +72,24 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
     useEffect(() => {
         if (socket) {
+
             socket.on('new-message', (data) => {
                 const { message, room } = data
 
+                // if current chat
                 if (chosenChat && room === chosenChat.id) {
                     setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
+                } else {
+                    // TODO
+                    // increment unread counter in db
+                    // increment unread counter in chatlist context
+                    const chat = chats.find(chat => chat.id === room)
+                    setChatList({
+                        type: 'UPDATE_CHAT',
+                        payload: {...chat, unreadCount: chat.unreadCount + 1}
+                    })
                 }
-                // add chat to top of chatlist
+                // push chat to top of chatlist
                 setChatList({
                     type: 'PUSH_TO_TOP',
                     payload: { id: room, message: message, senderName: message.username }
@@ -87,7 +98,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
             })
 
             socket.on('other-member-exit', (data) => {
-                const { room, member } = data
+                const { member } = data
                 if (chosenChat) {
                     setChosenChat({ ...chosenChat, members: chosenChat.members.filter(m => m != member.username) })
                 }

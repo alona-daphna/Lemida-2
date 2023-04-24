@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     socket.on('join-room', (room) => {
         socket.join(room)
     })
-
+    
     // add new members to room
     socket.on('other-join-room', (data) => {
         const { chat, members, who } = data
@@ -65,28 +65,28 @@ io.on('connection', (socket) => {
         })
         // sends number of times
         // notify all members (previous and new)
-        io.to(chat.id).emit('member-join', { chat: chat, members: members, who: who })
+        io.to(chat.id).emit('join-existing-chat', { chat: chat, members: members, who: who })
     })
 
     socket.on('send-message', (data) => {
         const { room, message } = data
+        console.log('message arrives to server: ', message)
         // send message object to all chat members but sender
         socket.broadcast.to(room).emit('new-message', { message: message, room: room })
     })
 
     socket.on('new-chat', (data) => {
         const {members, chat} = data
-        console.log(members)
-        socket.join(chat._id)
+        socket.join(chat.id)
         let socketId;
         members.forEach((m) => {
             socketId = connectedUsers[m]
             if (socketId) {
                 diffSocket = io.sockets.sockets.get(socketId)
-                diffSocket.join(chat._id)
+                diffSocket.join(chat.id)
             }
         })
-        socket.broadcast.to(chat._id).emit('added-to-new-chat', chat)
+        socket.broadcast.to(chat.id).emit('join-new-chat', chat)
     })
 
     socket.on('member-exit', (data) => {
@@ -98,7 +98,6 @@ io.on('connection', (socket) => {
         const username = Object.keys(connectedUsers).find(key => connectedUsers[key] === socket.id)
         if (username) {
             delete connectedUsers[username];
-            console.log(connectedUsers)
         }
     })
 })

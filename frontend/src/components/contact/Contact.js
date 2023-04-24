@@ -10,7 +10,7 @@ const Contact = ({ contact, onConversationClicked }) => {
     const {user} = useContext(UserContext);
     const {setChosenChat} = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
-    const {id, name, lastMsg, senderName, time, picture} = contact
+    const {id, name, lastMsg, senderName, time, picture, unreadCount} = contact
     
     const handleContactClick = () => {
         onConversationClicked()
@@ -38,6 +38,7 @@ const Contact = ({ contact, onConversationClicked }) => {
                     </div>
                 </div>
                 <div className="time">{time}</div>
+                {unreadCount > 0 && <div className="unread">{unreadCount}</div>}
             </div>
             <div className="line"></div>
         </div>

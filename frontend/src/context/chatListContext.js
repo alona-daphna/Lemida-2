@@ -18,11 +18,19 @@ const chatReducer = (state, action) => {
                 // add newly created chat to top
                 chats: [action.payload, ...state.chats]
             }
-        case 'UPDATE_CHAT':
+        case 'REMOVE_MEMBER':
+            const { chatId, memberToRemove } = action.payload
+            const updatedChats = state.chats.map(chat => {
+                if (chat.id === chatId) {
+                    return {
+                        ...chat,
+                        members: chat.members.filter(m => m !== memberToRemove.username)
+                    }
+                }
+                return chat
+            })
             return {
-                chats: state.chats.map(chat => 
-                    chat.id === action.payload.id ? action.payload : chat
-                )
+                chats: updatedChats
             }
         case 'DELETE_CHAT':
             return {

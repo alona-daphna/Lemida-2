@@ -44,7 +44,7 @@ const ChatForm = ({ setShowChatForm }) => {
                 payload: json
             })
             // fire event chat is created
-            socket.emit('new-chat', {members: members, chat: json})
+            socket.emit('new-chat', {members: [...new Set(members)], chat: json})
             // navigate to home
             setShowChatForm(false)
         } else {
