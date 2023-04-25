@@ -27,12 +27,22 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
     useEffect(() => {
         if (socket) {
 
+            socket.on('new-message', (data) => {
+                const {room, message} = data
+                // push chat to top of chatlist
+                setChatList({
+                    type: 'PUSH_TO_TOP',
+                    payload: { id: room, message: message, senderName: message.username }
+                })
+            })
+
             socket.on('join-existing-chat', (data) => {
                 const { chat, members, who } = data
+
                 if (members.includes(user.username)) {
                     setChatList({
                         type: 'ADD_CHAT',
-                        payload: chat
+                        payload: { ...chat, members: [...chat.members, ...members] }
                     })
                     console.log(`${who} added you and ${members.filter(m => m !== user.username)}`)
                 } else {
@@ -51,7 +61,7 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
                 const { room, member } = data;
                 setChatList({
                     type: 'REMOVE_MEMBER',
-                    payload: {chatId: room, memberToRemove: member}
+                    payload: { chatId: room, memberToRemove: member }
                 })
             })
         }
@@ -71,6 +81,7 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
         fetchConversations();
         return () => {
             if (socket) {
+                socket.off('new-message')
                 socket.off('join-existing-chat')
                 socket.off('join-new-chat')
                 socket.off('other-member-exit')

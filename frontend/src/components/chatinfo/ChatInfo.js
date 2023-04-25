@@ -29,15 +29,15 @@ const ChatInfo = ({ setShowChatInfo }) => {
     })
 
     socket.on('join-existing-chat', (data) => {
-      const { members } = data
-      setChosenChat({ ...chosenChat, members: [...chosenChat.members, ...members] })
+      const { chat, members } = data
+      setChosenChat({ ...chat, members: [...chat.members, ...members] })
     })
 
     return () => {
       socket.off('other-member-exit')
       socket.off('join-existing-chat')
     }
-  }, [])
+  }, [socket])
 
   useEffect(() => {
     if (participantsRef.current) {

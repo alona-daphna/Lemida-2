@@ -83,19 +83,19 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                     // TODO
                     // increment unread counter in db
                     // increment unread counter in chatlist context
-                    const chat = chats.find(chat => chat.id === room)
-                    setChatList({
-                        type: 'UPDATE_CHAT',
-                        payload: {...chat, unreadCount: chat.unreadCount + 1}
-                    })
+                    // const chat = chats.find(chat => chat.id === room)
+                    // setChatList({
+                    //     type: 'UPDATE_CHAT',
+                    //     payload: {...chat, unreadCount: chat.unreadCount + 1}
+                    // })
                 }
-                // push chat to top of chatlist
-                setChatList({
-                    type: 'PUSH_TO_TOP',
-                    payload: { id: room, message: message, senderName: message.username }
-                })
 
             })
+
+            socket.on('join-existing-chat', (data) => {
+                const { members } = data
+                setChosenChat({ ...chosenChat, members: [...chosenChat.members, ...members] })
+              })
 
             socket.on('other-member-exit', (data) => {
                 const { member } = data
@@ -108,9 +108,10 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
             if (socket) {
                 socket.off('new-message');
                 socket.off('other-member-exit')
+                socket.off('join-existing-chat')
             }
         }
-    }, [])
+    }, [socket])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
