@@ -17,6 +17,12 @@
     font-size: 0.95rem;
 }
 
+@media (max-width: 500px){
+    .add-member, .exit-chat {
+        width: 50%;
+    }
+}
+
 .chat-info-content input {
     background: var(--dark-gray-1);
     border-radius: 10px;
@@ -83,18 +89,28 @@
 }
 
 .chat-name-form {
-    display: flex;
+    display: grid;
+    grid-template-columns: 90% 10%;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     margin: 20px auto 0;
-    width: 90%;
-  }
+    width: 30%;
+}
+
+.chat-name-form * {
+    height:  45px;
+}
+
+.chat-name-form input {
+    padding-left: 20px;
+    padding-right: 80px;
+}
+
   
 .chat-name-form button {
-    padding: 10px 15px;
     border-radius: 10px;
     font-size: 0.95rem;
+    margin-left: -60px;
 
 }
 

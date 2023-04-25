@@ -45,7 +45,7 @@ button {
 }
 
 .new-chat-form .submit{
-    border-radius: 25px;
+    border-radius: 10px;
     width: 60%;
     align-self: center;
     margin-top: -25px;
