@@ -75,7 +75,6 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
             socket.on('new-message', (data) => {
                 const { message, room } = data
-
                 // if current chat
                 if (chosenChat && room === chosenChat.id) {
                     setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
@@ -111,7 +110,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                 socket.off('join-existing-chat')
             }
         }
-    }, [socket])
+    }, [socket, chosenChat])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
