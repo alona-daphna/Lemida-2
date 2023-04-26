@@ -51,19 +51,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                 })
                 const chat = await response.json()
                 setCurrentChat(chat)
-
-                const idToUsername = {};
-                chat.members.forEach(member => {
-                    idToUsername[member._id] = member.username;
-                });
-
-                const messagesWithUsername = chat.message_history.map(message => {
-                    const { sender, text, createdAt } = message;
-                    const username = idToUsername[sender];
-                    return { text, sender, username, createdAt };
-                });
-
-                setMessages(messagesWithUsername)
+                setMessages(chat.message_history)
             }
         }
 
@@ -77,7 +65,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                 const { message, room } = data
                 // if current chat
                 if (chosenChat && room === chosenChat.id) {
-                    setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
+                    setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, createdAt: message.createdAt }]);
                 } else {
                     // TODO
                     // increment unread counter in db
@@ -130,7 +118,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
             const updatedChat = await response.json();
             const newMsg = updatedChat.message_history.slice(-1)[0];
-            const msgToAdd = { text: newMsg.text, sender: newMsg.sender, username: user.username, createdAt: newMsg.createdAt }
+            const msgToAdd = { text: newMsg.text, sender: newMsg.sender, createdAt: newMsg.createdAt }
             setMessages([...messages, msgToAdd])
 
             socket.emit('send-message', {
@@ -171,9 +159,9 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
                             <Message
                                 key={index}
                                 message={message.text}
-                                isMine={message.sender === user._id}
+                                isMine={message.sender === user.username}
                                 time={message.createdAt}
-                                username={message.username}
+                                username={message.sender}
                             />
                         ))}
                         <div ref={messagesEndRef} />

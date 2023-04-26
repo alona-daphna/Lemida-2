@@ -26,8 +26,18 @@ const getChat = async (req, res) => {
         const chat = await Chat.findById(chatId).populate({
             path: 'members',
             select: '-password'
+        }).populate({
+            path: 'message_history.sender',
+            select: 'username -_id'
         });
-        res.status(200).json(chat);
+        const chatWithUsername = chat.toObject();
+        chatWithUsername.message_history = chat.message_history.map(message => {
+            return {
+                ...message.toObject(),
+                sender: message.sender.username
+            }
+        });
+        res.status(200).json(chatWithUsername);
     } catch (error) {
         res.status(400).json({ error: error })
     }
@@ -180,10 +190,22 @@ const createMessage = async (req, res) => {
         ).populate({
             path: 'members',
             select: '-password'
+        }).populate({
+            path: 'message_history.sender',
+            select: 'username -_id'
         });
+
         if (!chat) return res.status(400).json({ error: 'Chat not found' })
 
-        return res.status(201).json(chat)
+        const chatWithUsername = chat.toObject();
+        chatWithUsername.message_history = chat.message_history.map(message => {
+            return {
+                ...message.toObject(),
+                sender: message.sender.username
+            }
+        });
+        res.status(200).json(chatWithUsername);;
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({ error: 'Failed to create message' })
