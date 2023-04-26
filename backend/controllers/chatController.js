@@ -27,9 +27,13 @@ const getChat = async (req, res) => {
             path: 'members',
             select: '-password'
         });
+
+        const isAuthorized = chat.members.some(element => element._id == req.userId)
+        if (!isAuthorized) return res.status(403).json({ error: 'User does not have access' })
+
         res.status(200).json(chat);
     } catch (error) {
-        res.status(400).json({error: error})
+        res.status(400).json({ error: error })
     }
 }
 
@@ -137,6 +141,9 @@ const updateChat = async (req, res) => {
             select: '-password'
         })
 
+        const isAuthorized = chat.members.some(element => element._id == req.userId)
+        if (!isAuthorized) return res.status(403).json({ error: 'User does not have access' })
+
         if (!chat) return res.status(400).json({error: 'Chat not found'})
     
         return res.status(200).json(chat)
@@ -171,6 +178,11 @@ const createMessage = async (req, res) => {
             path: 'members',
             select: '-password'
         });
+
+        const isAuthorized = chat.members.some(element => element._id == req.userId)
+        if (!isAuthorized) return res.status(403).json({ error: 'User does not have access' })
+        
+
         if (!chat) return res.status(400).json({error: 'Chat not found'})
 
         return res.status(201).json(chat)
@@ -193,6 +205,9 @@ const deleteChat = async (req, res) => {
                 path: 'members',
                 select: '-password'
             })
+        
+        const isAuthorized = chat.members.some(element => element._id == req.userId)
+        if (!isAuthorized) return res.status(403).json({ error: 'User does not have access' })
         
         if (chat.members.length === 0) {
             await Chat.findByIdAndDelete(req.userId)
