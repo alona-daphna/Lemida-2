@@ -46,7 +46,8 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         // fetch chat message history
         const fetchMessages = async () => {
             if (chosenChat) {
-                const response = await fetch(`http://localhost:4000/api/chats/${chosenChat.id}`, {
+                console.log(chosenChat)
+                const response = await fetch(`http://localhost:4000/api/chats/${chosenChat._id}`, {
                     credentials: 'include'
                 })
                 const chat = await response.json()
@@ -54,7 +55,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
                 const idToUsername = {};
                 chat.members.forEach(member => {
-                    idToUsername[member._id] = member.username;
+                    idToUsername[member.memberId._id] = member.memberId.username;
                 });
 
                 const messagesWithUsername = chat.message_history.map(message => {
@@ -74,7 +75,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         socket.on('new-message', (data) => {
             const { message, room } = data
 
-            if (chosenChat && room === chosenChat.id) {
+            if (chosenChat && room === chosenChat._id) {
                 setMessages((prevMessages) => [...prevMessages, { text: message.text, sender: message.sender, username: message.username, createdAt: message.createdAt }]);
             }
             // add chat to top of chatlist
@@ -95,7 +96,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
         if (message) {
             setUserAtBottom(isScrolledToBottom())
             // save message to db
-            const response = await fetch(`http://localhost:4000/api/chats/${chosenChat.id}/messages`, {
+            const response = await fetch(`http://localhost:4000/api/chats/${chosenChat._id}/messages`, {
                 method: 'POST',
                 body: JSON.stringify({
                     "text": message
@@ -107,12 +108,13 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
             })
 
             const updatedChat = await response.json();
+            console.log(updatedChat)
             const newMsg = updatedChat.message_history.slice(-1)[0];
             const msgToAdd = { text: newMsg.text, sender: newMsg.sender, username: user.username, createdAt: newMsg.createdAt }
             setMessages([...messages, msgToAdd])
 
             socket.emit('send-message', {
-                room: chosenChat.id, 
+                room: chosenChat._id, 
                 message: msgToAdd
             })
 
@@ -120,7 +122,7 @@ const Chat = ({ onBackClick, setShowChatInfo }) => {
 
             setChatList({
                 type: 'PUSH_TO_TOP',
-                payload: { id: chosenChat.id, message: msgToAdd, senderName: user.username }
+                payload: { id: chosenChat._id, message: msgToAdd, senderName: user.username }
             })
         }
     }

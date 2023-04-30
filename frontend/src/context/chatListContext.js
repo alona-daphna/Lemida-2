@@ -26,22 +26,25 @@ const chatReducer = (state, action) => {
             }
         case 'DELETE_CHAT':
             return {
-                chats: state.chats.filter(chat => chat.id !== action.payload.id)
+                chats: state.chats.filter(chat => chat._id !== action.payload.id)
             }
         case 'PUSH_TO_TOP':
             // receives a chat id
-            const {id, message, senderName}  = action.payload
-            let chatToPush = state.chats.find(chat => chat.id === id);
+            const {id, message, senderName} = action.payload
+            let chatToPush = state.chats.find(chat => chat._id === id);
             
-            // edit chat's lastMsg and time
-            const date = new Date(message.createdAt)
-            const hour = date ? date.getHours().toString().padStart(2, "0") : "";
-            const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";        
-            chatToPush.time = `${hour}:${minute}`
-            chatToPush.lastMsg = message.text
-            chatToPush.senderName = senderName
-            
-            const remainingChats = state.chats.filter(chat => chat.id !== id )
+            if (message && senderName) {
+                // edit chat's lastMsg and time
+                // const date = new Date(message.createdAt)
+                // const hour = date ? date.getHours().toString().padStart(2, "0") : "";
+                // const minute = date ? date.getMinutes().toString().padStart(2, "0") : "";        
+                chatToPush.message_history.push({text: message.text, sender: message.sender, createdAt: message.createdAt})
+                // chatToPush.time = `${hour}:${minute}`
+                // chatToPush.lastMsg = message.text
+                // chatToPush.senderName = senderName
+            }
+
+            const remainingChats = state.chats.filter(chat => chat._id !== id )
             return {
                 chats: [chatToPush, ...remainingChats]
             }

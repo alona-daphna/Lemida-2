@@ -6,20 +6,24 @@ import { SocketContext } from '../../context/socketContext';
 import { UserContext } from '../../context/userContext';
 import ContextMenu from '../contextMenu/contextMenu'
 import { ChatContext } from "../../context/chatListContext";
+import { ContextMenuContext } from '../../context/contextMenuContext';
+import { formatChat } from '../../utils/formatChat';
 
 const Contact = ({ contact, onConversationClicked }) => {
 
     const {user, setUser} = useContext(UserContext);
     const { chosenChat, setChosenChat } = useContext(ChosenChatContext)
     const {socket} = useContext(SocketContext)
-    const {id, name, lastMsg, senderName, time, picture} = contact
+    const {id, name, lastMsg, senderName, time, picture} = formatChat(contact)
     const [showContextMenu, setShowContextMenu] = useState(false);
     const { dispatch: setChatList } = useContext(ChatContext)
+    const { contextMenu, setContextMenu } = useContext(ContextMenuContext);
     const [contextMenuPos, setContextMenuPos] = useState({left: "0px", top: "0px"});
     
     const handleContactClick = () => {
         onConversationClicked()
         // set to chat object
+        console.log(contact)
         setChosenChat(contact)
         
     }
@@ -32,11 +36,21 @@ const Contact = ({ contact, onConversationClicked }) => {
             top: e.pageY + "px",
         });
         setShowContextMenu(true);
+        setContextMenu(id);
     };
+
+    useEffect(() => {
+        if (contextMenu) {
+            if (contextMenu !== id) {
+                setShowContextMenu(false);
+            }
+        }
+    }, [contextMenu])
 
     useEffect(() => {
         // join socket room with chat id
         socket.emit('join-room', id)
+        console.log(contact)
     }, [])
 
     return ( 
@@ -61,7 +75,39 @@ const Contact = ({ contact, onConversationClicked }) => {
                 <div className="contact-context-menu" style={{left: contextMenuPos.left, top: contextMenuPos.top}}>
                     <ContextMenu
                         onClose={() => setShowContextMenu(false)}
-                        onPinClick={() => console.log('Pin clicked!')}
+                        onPinClick={async () => {
+                            console.log(contact)
+                            console.log(contact.members)
+
+                            const dict = contact.members.reduce((acc, cur) => {
+                                acc[cur.memberId.username] = cur.pinned;
+                                return acc;
+                            }, {});
+                            dict[user.username] = true
+                            console.log(dict)
+
+                            const response = await fetch(`http://localhost:4000/api/chats/${id}`, {
+                                method: 'PATCH',
+                                body: JSON.stringify({
+                                    "name": name ? name : chosenChat.name,
+                                    "members": Object.keys(dict),
+                                    "usernameToPinned": dict
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                credentials: 'include'
+                            })
+                            const json = await response.json()
+                            console.log(json)
+
+                            if (response.ok) {
+                                setChatList({
+                                    type: 'PUSH_TO_TOP',
+                                    payload: { id: id, message: null, senderName: null }
+                                })
+                            }
+                        }}
                         onDeleteClick={
                             async () => {
                                 const response = await fetch(`http://localhost:4000/api/chats/${id}`, {
@@ -69,9 +115,10 @@ const Contact = ({ contact, onConversationClicked }) => {
                                     credentials: 'include'
                                 })
                                 const json = await response.json()
+                                console.log(json)
 
                                 if (response.ok) {
-                                    if (chosenChat?.id === id) {
+                                    if (chosenChat?._id === id) {
                                         setChosenChat(null)
                                     }
                                     setChatList({

@@ -27,10 +27,12 @@ const Conversations = ({ onConversationClick, setShowChatForm }) => {
             })
             const chatsJson = await response.json()
             console.log(chatsJson)
-            const chatsFiltered = chatsJson.map(chat => {return formatChat(chat)});
+            // const chatsFiltered = chatsJson.map(chat => {return formatChat(chat)});
+            // console.log(chatsFiltered)
             setChatList({
                 type: 'SET_CHATS',
-                payload: chatsFiltered
+                payload: chatsJson
+                // payload: chatsFiltered
             })
         }
 

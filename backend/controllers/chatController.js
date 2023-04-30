@@ -24,7 +24,7 @@ const getChat = async (req, res) => {
         const chatId = req.params.id;
         // return an array of users without the password prop inside the chat object
         const chat = await Chat.findById(chatId).populate({
-            path: 'members',
+            path: 'members.memberId',
             select: '-password'
         });
         res.status(200).json(chat);
@@ -40,10 +40,11 @@ const getUserChats = async (req, res) => {
         const userId = req.userId;
         console.log("user ID:", userId)
         // find all chats where the members array contains the user id
-        const chats = await Chat.find({ members: { $elemMatch: { memberId: userId } } }).populate({
-            path: 'members',
-            select: '-password'
-        })
+        const chats = await Chat.find({ members: { $elemMatch: { memberId: userId } } })
+            .populate({
+                path: 'members.memberId',
+                select: '-password'
+            })
         return res.status(200).json(chats)
     } catch (error) {
         console.log(error)
@@ -84,7 +85,7 @@ const createChat = async (req, res) => {
     try {
         const chat = await Chat.create({ name, members: memberIds });
         const populatedChat = await Chat.findById(chat._id).populate({
-            path: 'members',
+            path: 'members.memberId',
             select: '-password'
         });
         return res.status(201).json(populatedChat);
@@ -96,7 +97,7 @@ const createChat = async (req, res) => {
 
 // update chat name, list of participants
 const updateChat = async (req, res) => {
-    let {name, members} = req.body
+    let {name, members, usernameToPinned} = req.body
     const user = await User.findById(req.userId)
 
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -125,15 +126,20 @@ const updateChat = async (req, res) => {
 
     // convert usernames to ids
     const memberIds = memberObjs.map(member => member._id)
+    const result = memberIds.map((memberId, index) => ({
+        memberId,
+        pinned: usernameToPinned[Object.keys(usernameToPinned)[index]] || false
+    }));
     console.log(memberIds)
+    console.log(result)
 
     try {
         const chat = await Chat.findOneAndUpdate(
             {_id: req.params.id},
-            {name, members: memberIds},
+            {name, members: result},
             {new: true}
         ).populate({
-            path: 'members',
+            path: 'members.memberId',
             select: '-password'
         })
 
@@ -168,7 +174,7 @@ const createMessage = async (req, res) => {
             {$push: {message_history: newMessage}},
             {new: true}
         ).populate({
-            path: 'members',
+            path: 'members.memberId',
             select: '-password'
         });
         if (!chat) return res.status(400).json({error: 'Chat not found'})
@@ -188,9 +194,9 @@ const deleteChat = async (req, res) => {
     try {
         const chat  = await Chat.findOneAndUpdate(
             {_id: req.params.id}, 
-            {$pull: {members: req.userId}},
+            {$pull: {members: { memberId: req.userId }}},
             {new: true}).populate({
-                path: 'members',
+                path: 'members.memberId',
                 select: '-password'
             })
         

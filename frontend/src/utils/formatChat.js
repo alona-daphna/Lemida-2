@@ -1,7 +1,7 @@
 export const formatChat = (chat) => {
     const idToUsername = {};
     chat.members.forEach(member => {
-        idToUsername[member._id] = member.username;
+        idToUsername[member.memberId._id] = member.memberId.username;
     });
     const lastMessage = chat.message_history.slice(-1)[0];
     const { sender, text, createdAt } = lastMessage ? lastMessage : ["", "", ""];
