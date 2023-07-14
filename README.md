@@ -17,4 +17,5 @@ create .env file to include the line PORT=4000
 npm run dev
 <br />
 go to localhost:4000 in browser
-  
+## Technologies
+Express.js, React.js, CSS, Socket.io, MongoDB
